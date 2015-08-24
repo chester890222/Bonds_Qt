@@ -19,12 +19,12 @@ INCLUDEPATH += ../BaseMarket\
                ../BaseSQL\
 
 SOURCES += basebond.cpp \
-    bondinfo.cpp \
     bondrealtimeinfo.cpp
 
 HEADERS += basebond.h \
-    bondinfo.h \
     bondrealtimeinfo.h
+
+
 unix {
     target.path = /usr/lib
     INSTALLS += target

@@ -14,7 +14,6 @@ CONFIG += staticlib
 
 DESTDIR = ../bin/lib
 
-
 SOURCES += \
     BaseTDF.cpp \
     BaseWindQuant.cpp
@@ -26,8 +25,7 @@ HEADERS +=\
     TDF/include/TDFAPIStruct.h \
     TDF/include/TDFAPIVersion.h \
     BaseWindQuant.h \
-    Wind/Quant/WindQuantAPI.h \
-    IBaseMarket.h
+    Wind/Quant/WindQuantAPI.h
 
 unix {
     target.path = /usr/lib

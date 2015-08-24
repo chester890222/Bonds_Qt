@@ -11,7 +11,6 @@ BondRealTimeInfo::BondRealTimeInfo(QObject *parent):BaseWindQuant(parent)
 BondRealTimeInfo::BondRealTimeInfo(const QString &windCode) {
     this->windCode = windCode;
     this->reqID = 0;
-//    this->isWSTqryDone = false;
     RWLock_realtime = new QReadWriteLock;
 //    connect(this,SIGNAL(signal_realtimedata_refresh()),this,SLOT(slot_update_histdata()),Qt::DirectConnection);
 }
@@ -39,6 +38,11 @@ const BondRealTimeInfo* BondRealTimeInfo::getBondRealtimeData() const{
     return temp;
 }
 
+const Bond_db_info* BondRealTimeInfo::getBond_db_info() const{
+    QReadLocker locker(RWLock_bond_db);
+    const Bond_db_info* temp = &this->bondinfo;
+    return temp;
+}
 
 ////////////////////////////////////////////////////////////
 
@@ -87,6 +91,22 @@ bool BondRealTimeInfo::cancelRequest() {
     }
     return res;
 }
+
+void BondRealTimeInfo::setBond_db_info(BondType bType, QString code, QString name, InterestType iType, double faceValue, QMap<QDate, double> coupons, double paymentFrequency, QDate carryDate, QDate listDate, QDate offlistDate, QDate MaturityDate, double IssueAmount) {
+    this->bond_db_info.bType = bType;
+    this->bond_db_info.code = code;
+    this->bond_db_info.name = name;
+    this->bond_db_info.iType = iType;
+    this->bond_db_info.faceValue = faceValue;
+    this->bond_db_info.coupons = coupons;
+    this->bond_db_info.paymentFrequency = paymentFrequency;
+    this->bond_db_info.carryDate = carryDate;
+    this->bond_db_info.listDate = listDate;
+    this->bond_db_info.offlistDate = offlistDate;
+    this->bond_db_info.MaturityDate = MaturityDate;
+    this->bond_db_info.IssueAmount = IssueAmount;
+}
+
 
 int BondRealTimeInfo::dataPro(WQEvent* pEvent, LPVOID pParam) {
     if (!pEvent || !pParam) {

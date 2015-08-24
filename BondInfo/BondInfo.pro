@@ -13,10 +13,17 @@ TEMPLATE = app
 
 DESTDIR = ../bin/app
 
+LIBS += ..bin/lib/BaseMarket\
+        ..bin/lib/BaseSQL
+
+INCLUDEPATH += ../BaseMarket\
+               ../BaseSQL\
 
 SOURCES += main.cpp\
-        bondinfo.cpp
+        bondinfo.cpp \
+    bondhandler.cpp
 
-HEADERS  += bondinfo.h
+HEADERS  += bondinfo.h \
+    bondhandler.h
 
 FORMS    += bondinfo.ui
