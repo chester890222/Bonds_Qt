@@ -19,7 +19,7 @@ public:
         :QObject(parient){}
     virtual ~IDataBase()
     {
-        qDebug()<<Q_FUNC_INFO;
+//        qDebug()<<Q_FUNC_INFO;
         Close();
     }
 
