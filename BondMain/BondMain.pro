@@ -13,6 +13,8 @@ TEMPLATE = app
 
 DESTDIR = ../bin
 
+#include($$PWD/../bonds.pri)
+
 SOURCES += main.cpp\
         mainwindow.cpp
 

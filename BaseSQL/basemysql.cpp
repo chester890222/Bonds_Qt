@@ -1,5 +1,6 @@
 #include "BaseMySql.h"
 #include <QDateTime>
+#include <QDebug>
 
 BaseMySql::BaseMySql(QObject *parent) :
     IDataBase(parent)
@@ -13,7 +14,7 @@ bool BaseMySql::Open(QString dbName,
                           QString hostName,QString connName)
 {
     emit signalSendMSG("MySql:::>>>连接...");
-
+    qDebug() << QString("MySql:::>>>Connecting...");
     if (!QSqlDatabase::drivers().contains("QMYSQL"))
         QMessageBox::critical(0, "Unable to load database", "This needs the QMYSQL driver");
 
@@ -30,6 +31,6 @@ bool BaseMySql::Open(QString dbName,
     }
 
     emit signalSendMSG("MySql:::>>>连接成功.");
-
+    qDebug() << QString("MySql:::>>>Connect Success.");
     return true;
 }
