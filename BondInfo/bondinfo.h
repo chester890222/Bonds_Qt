@@ -3,6 +3,8 @@
 
 #include <QWidget>
 
+#include "bondhandler.h"
+
 namespace Ui {
 class BondInfo;
 }
@@ -14,6 +16,9 @@ class BondInfo : public QWidget
 public:
     explicit BondInfo(QWidget *parent = 0);
     ~BondInfo();
+
+protected:
+    BondHandler *bondhandler;
 
 private:
     Ui::BondInfo *ui;

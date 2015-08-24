@@ -13,10 +13,15 @@ TEMPLATE = app
 
 DESTDIR = ../bin/app
 
+MYBASE += BaseMarket BaseSQL BaseBond
+include($$PWD/../bonds.pri)
+
 
 SOURCES += main.cpp\
-        bondinfo.cpp
+        bondinfo.cpp \
+    bondhandler.cpp
 
-HEADERS  += bondinfo.h
+HEADERS  += bondinfo.h \
+    bondhandler.h
 
 FORMS    += bondinfo.ui

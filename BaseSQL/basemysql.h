@@ -19,9 +19,7 @@ public:
     explicit BaseMySql(QObject *parent = 0);
 
     //connName方便连接多个数据库
-    bool Open(QString dbName,
-                   QString userName,QString passWord,
-                   QString hostName="localhost",QString connName=QString());
+    bool Open(QString dbName,QString userName,QString passWord,QString hostName="localhost",QString connName=QString());
 
 };
 
