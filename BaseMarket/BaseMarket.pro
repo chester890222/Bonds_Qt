@@ -12,6 +12,8 @@ TEMPLATE = lib
 #DEFINES += BASEMARKET_LIBRARY
 CONFIG += staticlib
 
+include($$PWD/../bonds.pri)
+
 DESTDIR = ../bin/lib
 
 SOURCES += \
@@ -25,9 +27,11 @@ HEADERS +=\
     TDF/include/TDFAPIStruct.h \
     TDF/include/TDFAPIVersion.h \
     BaseWindQuant.h \
-    Wind/Quant/WindQuantAPI.h
+    Wind/Quant/WindQuantAPI.h\
+    IBaseMarket.h
 
 unix {
     target.path = /usr/lib
     INSTALLS += target
 }
+

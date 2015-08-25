@@ -6,9 +6,15 @@ BondInfo::BondInfo(QWidget *parent) :
     ui(new Ui::BondInfo)
 {
     ui->setupUi(this);
+    bondhandler = new BondHandler();
+    bondhandler->Init();
 }
 
 BondInfo::~BondInfo()
 {
+    if (bondhandler != NULL) {
+        delete bondhandler;
+        bondhandler = NULL;
+    }
     delete ui;
 }

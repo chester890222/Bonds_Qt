@@ -3,18 +3,18 @@
 
 #include <QObject>
 #include "basemysql.h"
+#include "BaseWindQuant.h"
 
 class BondHandler : public QObject
 {
     Q_OBJECT
 public:
     explicit BondHandler(QObject *parent = 0);
-    void ~BondHandler();
+    ~BondHandler();
 
-protected:
     void Init();
 
-
+protected:
     BaseMySql *bond_db;
 
 

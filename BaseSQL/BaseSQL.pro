@@ -11,6 +11,8 @@ TARGET = BaseSQL
 TEMPLATE = lib
 CONFIG += staticlib
 
+#include($$PWD/../bonds.pri)
+
 DESTDIR = ../bin/lib
 
 SOURCES += basemysql.cpp

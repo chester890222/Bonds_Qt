@@ -4,6 +4,8 @@
 #include <QWidget>
 #include "basemysql.h"
 
+#include "bondhandler.h"
+
 namespace Ui {
 class BondInfo;
 }
@@ -17,7 +19,7 @@ public:
     ~BondInfo();
 
 protected:
-
+    BondHandler *bondhandler;
 
 private:
     Ui::BondInfo *ui;

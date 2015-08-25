@@ -10,13 +10,17 @@ TARGET = BaseBond
 TEMPLATE = lib
 CONFIG += staticlib
 
-DESTDIR = ..bin/lib
+DESTDIR = ../bin/lib
 
-LIBS += ..bin/lib/BaseMarket\
-        ..bin/lib/BaseSQL
+MYBASE += BaseMarket BaseSQL
+include($$PWD/../bonds.pri)
+#LIBS += ../bin/lib/BaseMarket.lib\
+#        ../bin/lib/BaseSQL.lib
 
-INCLUDEPATH += ../BaseMarket\
-               ../BaseSQL\
+
+#INCLUDEPATH += ../BaseMarket\
+#               ../BaseSQL\
+
 
 SOURCES += basebond.cpp \
     bondrealtimeinfo.cpp

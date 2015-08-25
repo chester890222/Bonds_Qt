@@ -13,11 +13,8 @@ TEMPLATE = app
 
 DESTDIR = ../bin/app
 
-LIBS += ..bin/lib/BaseMarket\
-        ..bin/lib/BaseSQL
-
-INCLUDEPATH += ../BaseMarket\
-               ../BaseSQL\
+MYBASE += BaseMarket BaseSQL BaseBond
+include($$PWD/../bonds.pri)
 
 SOURCES += main.cpp\
         bondinfo.cpp \

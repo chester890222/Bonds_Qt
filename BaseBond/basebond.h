@@ -7,7 +7,7 @@
 
 class BondRealtimeData {
 //债券实时数据（YTM由最新数据计算）
-protected:
+public:
     QString windCode;
     double date_db;
 
@@ -54,13 +54,13 @@ enum Market {
 
 //利率类型
 enum InterestType {
-    fixed=0,//tr("固定利率"),
-    floating=1,//tr("浮动利率")
+    fixed_interest=0,//tr("固定利率"),
+    floating_interest=1,//tr("浮动利率")
 };
 
 
 class Bond_db_info {
-
+public:
     BondType bType;
 
     QString code;
