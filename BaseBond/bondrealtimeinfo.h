@@ -12,12 +12,12 @@
 
 
 
-class BondRealTimeInfo : public QObject, BaseWindQuant
+class BondRealtimeInfo : public QObject, BaseWindQuant
 {
     Q_OBJECT
 public:
-    BondRealTimeInfo(const QString &windCode);
-    virtual ~BondRealTimeInfo();
+    BondRealtimeInfo(const QString &windCode);
+    virtual ~BondRealtimeInfo();
 
     //获取股票的实时数据
     //isRealtime = false 获取一次性快照数据

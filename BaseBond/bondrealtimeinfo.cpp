@@ -4,15 +4,15 @@
 #include <QThread>
 
 
-BondRealTimeInfo::BondRealTimeInfo(const QString &windCode) {
+BondRealtimeInfo::BondRealtimeInfo(const QString &windCode) {
     this->windCode = windCode;
     this->reqID = 0;
     RWLock_realtime = new QReadWriteLock;
 //    connect(this,SIGNAL(signal_realtimedata_refresh()),this,SLOT(slot_update_histdata()),Qt::DirectConnection);
 }
 
-BondRealTimeInfo::~BondRealTimeInfo() {
-//    qDebug() << "BondRealTimeInfo::~BondRealTimeInfo is called on thread " << QThread::currentThreadId();
+BondRealtimeInfo::~BondRealtimeInfo() {
+//    qDebug() << "BondRealtimeInfo::~BondRealtimeInfo is called on thread " << QThread::currentThreadId();
     if (RWLock_realtime != NULL) {
         delete RWLock_realtime;
         RWLock_realtime = NULL;
@@ -22,19 +22,19 @@ BondRealTimeInfo::~BondRealTimeInfo() {
 }
 
 
-QString BondRealTimeInfo::getBondCode() {
+QString BondRealtimeInfo::getBondCode() {
 //    qDebug() << Q_FUNC_INFO();
     return this->windCode;
 }
 
-const BondRealtimeData* BondRealTimeInfo::getBondRealtimeData() const{
+const BondRealtimeData* BondRealtimeInfo::getBondRealtimeData() const{
 //    qDebug() << Q_FUNC_INFO();
     QReadLocker locker(RWLock_realtime);
     const BondRealtimeData* temp = &this->realtimedata;
     return temp;
 }
 
-const Bond_db_info* BondRealTimeInfo::getBond_db_info() const{
+const Bond_db_info* BondRealtimeInfo::getBond_db_info() const{
     QReadLocker locker(RWLock_bond_db);
     const Bond_db_info* temp = &this->bond_db_info;
     return temp;
@@ -42,7 +42,7 @@ const Bond_db_info* BondRealTimeInfo::getBond_db_info() const{
 
 ////////////////////////////////////////////////////////////
 
-bool BondRealTimeInfo::requestDataFromServer(const QString &windCode, bool isRealtime) {
+bool BondRealtimeInfo::requestDataFromServer(const QString &windCode, bool isRealtime) {
 //    qDebug() << Q_FUNC_INFO();
 
     this->windCode = windCode;
@@ -71,12 +71,12 @@ bool BondRealTimeInfo::requestDataFromServer(const QString &windCode, bool isRea
     return res;
 }
 
-bool BondRealTimeInfo::requestDataFromServer(bool isRealtime) {
+bool BondRealtimeInfo::requestDataFromServer(bool isRealtime) {
 //    qDebug() << Q_FUNC_INFO();
     return requestDataFromServer(this->windCode, isRealtime);
 }
 
-bool BondRealTimeInfo::cancelRequest() {
+bool BondRealtimeInfo::cancelRequest() {
 
     bool res = false;
     if (reqID != 0) {
@@ -88,7 +88,7 @@ bool BondRealTimeInfo::cancelRequest() {
     return res;
 }
 
-void BondRealTimeInfo::setBond_db_info(BondType bType, QString code, QString name, InterestType iType, double faceValue, QMap<QDate, double> coupons, double paymentFrequency, QDate carryDate, QDate listDate, QDate offlistDate, QDate MaturityDate, double IssueAmount) {
+void BondRealtimeInfo::setBond_db_info(BondType bType, QString code, QString name, InterestType iType, double faceValue, QMap<QDate, double> coupons, double paymentFrequency, QDate carryDate, QDate listDate, QDate offlistDate, QDate MaturityDate, double IssueAmount) {
     this->bond_db_info.bType = bType;
     this->bond_db_info.code = code;
     this->bond_db_info.name = name;
@@ -104,12 +104,12 @@ void BondRealTimeInfo::setBond_db_info(BondType bType, QString code, QString nam
 }
 
 
-int BondRealTimeInfo::dataPro(WQEvent* pEvent, LPVOID pParam) {
+int BondRealtimeInfo::dataPro(WQEvent* pEvent, LPVOID pParam) {
     if (!pEvent || !pParam) {
         return 0;
     }
 
-    BondRealTimeInfo *pSri = (BondRealTimeInfo*) pParam;
+    BondRealtimeInfo *pSri = (BondRealtimeInfo*) pParam;
 
     if (pEvent->pQuantData != NULL) {
         QWriteLocker locker(pSri->RWLock_realtime);
