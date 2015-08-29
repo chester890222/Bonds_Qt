@@ -4,35 +4,7 @@
 #include <QString>
 #include <QDate>
 #include <QMap>
-
-class BondRealtimeData {
-//债券实时数据（YTM由最新数据计算）
-public:
-    QString windCode;
-    double date_db;
-
-    double rt_vwap; //日内均价
-    double rt_vwap_YTM;
-    double rt_high; //最高价
-    double rt_high_YTM;
-    double rt_low;  //最低价
-    double rt_low_YTM;
-    double rt_last; //现价
-    double rt_last_YTM;
-    double rt_last_amt; //现额
-    double rt_last_vol; //现量
-    double rt_latest; //最新成交价
-    double rt_latest_YTM;
-    double rt_vol; //成交量
-    double rt_amt; //成交额
-
-    double rt_bid[5]; //买一至买五价，数组下标0表示买一，1表示买二，以此类推
-    double rt_bid_YTM[5];
-    double rt_ask[5]; //卖价
-    double rt_ask_YTM[5];
-    double rt_bsize[5]; //买量
-    double rt_asize[5]; //卖量
-};
+#include "bondrealtimeinfo.h"
 
 //债券种类
 enum BondType {
@@ -72,17 +44,42 @@ public:
     QDate carryDate;
     QDate listDate;
     QDate offlistDate;
-    QDate MaturityDate;
-    double IssueAmount;
+    QDate maturityDate;
+    double issueAmount;
 
 };
 
 
-class BaseBond
+class BaseBond : public QObject
 {
+    Q_OBJECT
 
 public:
-    BaseBond();
+    BaseBond(QString windCode);
+
+//protected:
+    QString bondCode;
+    Bond_db_info bond_db_info;
+    BondRealtimeInfo bondRealtimeInfo;
+
+    double rt_vwap_YTM;
+    double rt_high_YTM;
+    double rt_low_YTM;
+    double rt_last_YTM;
+    double rt_latest_YTM;
+    double rt_bid_YTM[5];
+    double rt_ask_YTM[5];
+
+    double accInterest;
+    double timeToMaturity;
+    double currentCoupon;
+
+    double cal_accInterest();
+    double cal_timeToMaturity();
+    double cal_currentCoupon();
+
+    void cal_YTMs();
+
 };
 
 #endif // BASEBOND_H

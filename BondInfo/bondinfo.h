@@ -6,8 +6,6 @@
 
 #include "bondhandler.h"
 
-#include "bondhandler.h"
-
 namespace Ui {
 class BondInfo;
 }

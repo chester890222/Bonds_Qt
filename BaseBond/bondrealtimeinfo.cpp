@@ -3,6 +3,9 @@
 #include <QDebug>
 #include <QThread>
 
+BondRealtimeInfo::BondRealtimeInfo() {
+
+}
 
 BondRealtimeInfo::BondRealtimeInfo(const QString &windCode) {
     this->windCode = windCode;
@@ -34,11 +37,6 @@ const BondRealtimeData* BondRealtimeInfo::getBondRealtimeData() const{
     return temp;
 }
 
-const Bond_db_info* BondRealtimeInfo::getBond_db_info() const{
-    QReadLocker locker(RWLock_bond_db);
-    const Bond_db_info* temp = &this->bond_db_info;
-    return temp;
-}
 
 ////////////////////////////////////////////////////////////
 
@@ -86,21 +84,6 @@ bool BondRealtimeInfo::cancelRequest() {
         reqID = 0; //请求号清零
     }
     return res;
-}
-
-void BondRealtimeInfo::setBond_db_info(BondType bType, QString code, QString name, InterestType iType, double faceValue, QMap<QDate, double> coupons, double paymentFrequency, QDate carryDate, QDate listDate, QDate offlistDate, QDate MaturityDate, double IssueAmount) {
-    this->bond_db_info.bType = bType;
-    this->bond_db_info.code = code;
-    this->bond_db_info.name = name;
-    this->bond_db_info.iType = iType;
-    this->bond_db_info.faceValue = faceValue;
-    this->bond_db_info.coupons = coupons;
-    this->bond_db_info.paymentFrequency = paymentFrequency;
-    this->bond_db_info.carryDate = carryDate;
-    this->bond_db_info.listDate = listDate;
-    this->bond_db_info.offlistDate = offlistDate;
-    this->bond_db_info.MaturityDate = MaturityDate;
-    this->bond_db_info.IssueAmount = IssueAmount;
 }
 
 
