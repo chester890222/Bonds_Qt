@@ -30,12 +30,12 @@ public:
 
     QString getBondCode();
     const BondRealtimeData *getBondRealtimeData() const;
-    const Bond_db_info     *getBond_db_info() const;
+    const BaseBond     *getBaseBond() const;
 
     QReadWriteLock *RWLock_realtime;
-    QReadWriteLock *RWLock_bond_db;
+    QReadWriteLock *RWLock_baseBond;
 
-    void setBond_db_info(BondType bType, QString code, QString name, InterestType iType,
+    void setBaseBond(BondType bType, QString code, QString name, InterestType iType,
                          double faceValue, QMap<QDate, double> coupons, double paymentFrequency,
                          QDate carryDate, QDate listDate, QDate offlistDate, QDate MaturityDate, double IssueAmount);
 
@@ -46,7 +46,7 @@ protected:
     WQID                    reqID;
     QString                 windCode;
     BondRealtimeData        realtimedata;
-    Bond_db_info            bond_db_info;
+    BaseBond                baseBond;
 
 signals:
     void signal_realtimedata_refresh();

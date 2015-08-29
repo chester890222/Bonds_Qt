@@ -34,9 +34,9 @@ const BondRealtimeData* BondRealtimeInfo::getBondRealtimeData() const{
     return temp;
 }
 
-const Bond_db_info* BondRealtimeInfo::getBond_db_info() const{
-    QReadLocker locker(RWLock_bond_db);
-    const Bond_db_info* temp = &this->bond_db_info;
+const BaseBond* BondRealtimeInfo::getBaseBond() const{
+    QReadLocker locker(RWLock_baseBond);
+    const BaseBond* temp = &this->baseBond;
     return temp;
 }
 

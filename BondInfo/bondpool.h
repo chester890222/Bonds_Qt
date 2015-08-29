@@ -11,15 +11,17 @@
 class BondPool
 {
 public:
-    static BondPool *getInstance();
+
     int init(const QStringList windCodesList);
     int clear();
 
     bool requestDataFromServer();
     bool cancelRequestFromServer();
 
+    static BondPool *getInstance();
     const QStringList *getWindCodes();
-    const QMap<QString, BondRealtimeInfo*> *getBond_Info_map;
+    int getwindCodesNumber();
+    const QMap<QString, BondRealtimeInfo*> *getBond_Info_map();
 
 
 
@@ -30,7 +32,7 @@ protected:
     bool isInit;
     bool isReq;
 
-    int windCodesSize;
+    int windCodesNumber;
     QStringList windCodes;
     QMap<QString, BondRealtimeInfo*> bond_info_map;
 

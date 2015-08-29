@@ -72,17 +72,29 @@ public:
     QDate carryDate;
     QDate listDate;
     QDate offlistDate;
-    QDate MaturityDate;
-    double IssueAmount;
+    QDate maturityDate;
+    double issueAmount;
 
 };
 
 
-class BaseBond
+class BaseBond : public Bond_db_info
 {
 
 public:
     BaseBond();
+
+
+protected:
+    Bond_db_info bond_db_info;
+    double accInterest;
+    double timeToMaturity;
+    double currentCoupon;
+
+    double cal_accInterest();
+    double cal_timeToMaturity();
+    double cal_currentCoupon();
+
 };
 
 #endif // BASEBOND_H

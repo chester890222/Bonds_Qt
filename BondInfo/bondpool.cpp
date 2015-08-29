@@ -1,14 +1,10 @@
 #include "bondpool.h"
-
-
-BondPool *BondPool::getInstance() {
-    return &g_instance;
-}
+#include "BaseWindQuant.h"
 
 BondPool::BondPool() {
     isInit = false;
     isReq = false;
-    windCodesSize = 0;
+    windCodesNumber = 0;
 }
 
 BondPool::~BondPool() {
@@ -20,14 +16,65 @@ int BondPool::init(const QStringList windCodesList) {
         clear();
     }
 
-    windCodesSize = windCodes.size();
-    for (int i=0; i < this->windCodesSize; i++) {
+    windCodesNumber = windCodes.Number();
+    for (int i=0; i < this->windCodesNumber; i++) {
         BondRealtimeInfo *realtimeInfoTemp = new BondRealtimeInfo(windCodesList[i]);
         windCodes.append(windCodesList[i]);
-//####################################
+        bond_info_map.insert(windCodesList[i], realtimeInfoTemp);
     }
 
-
-
+    isInit = true;
+    return 0;
 
 }
+
+int BondPool::clear() {
+    if (isInit) {
+        if (isReq) {
+            cancelRequestFromServer();
+        }
+        this->windCodesNumber = 0;
+        this->windCodes.clear();
+
+        qDeleteAll(bond_info_map);
+        bond_info_map.clear();
+
+
+    }
+
+    isInit = false;
+    return 0;
+}
+
+bool BondPool::requestDataFromServer() {
+//########################################
+}
+
+bool BondPool::cancelRequestFromServer() {
+    bool res = false;
+    if (!isInit) return res;
+    if (isReq) {
+        res = BaseWindQuant::MyCancelAllRequest();
+        isReq = false;
+    }
+    return res;
+}
+
+
+static BondPool *BondPool::getInstance() {
+    return &this->g_instance;
+}
+
+const QStringList *BondPool::getWindCodes() {
+    return &this->windCodes;
+}
+
+int BondPool::getwindCodesNumber() {
+    return this->windCodesNumber;
+}
+
+const QMap<QString, BondRealtimeInfo*> *BondPool::getBond_Info_map() {
+    return &this->bond_info_map;
+}
+
+
