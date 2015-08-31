@@ -4,8 +4,8 @@
 #include <QThread>
 
 
-BondRealtimeInfo::BondRealtimeInfo(const QString &windCode) {
-    this->windCode = windCode;
+BondRealtimeInfo::BondRealtimeInfo(const QString &windCode) : BaseWindQuant() {
+    this->bondCode = windCode;
     this->reqID = 0;
     RWLock_realtime = new QReadWriteLock;
 //    connect(this,SIGNAL(signal_realtimedata_refresh()),this,SLOT(slot_update_histdata()),Qt::DirectConnection);
@@ -24,7 +24,7 @@ BondRealtimeInfo::~BondRealtimeInfo() {
 
 QString BondRealtimeInfo::getBondCode() {
 //    qDebug() << Q_FUNC_INFO();
-    return this->windCode;
+    return this->bondCode;
 }
 
 const BondRealtimeData* BondRealtimeInfo::getBondRealtimeData() const{
@@ -34,18 +34,13 @@ const BondRealtimeData* BondRealtimeInfo::getBondRealtimeData() const{
     return temp;
 }
 
-const BaseBond* BondRealtimeInfo::getBaseBond() const{
-    QReadLocker locker(RWLock_baseBond);
-    const BaseBond* temp = &this->baseBond;
-    return temp;
-}
 
 ////////////////////////////////////////////////////////////
 
 bool BondRealtimeInfo::requestDataFromServer(const QString &windCode, bool isRealtime) {
 //    qDebug() << Q_FUNC_INFO();
 
-    this->windCode = windCode;
+    this->bondCode = windCode;
 
     if (reqID != 0) {
         cancelRequest();//同时会将上次请求的ID清零
@@ -58,9 +53,9 @@ bool BondRealtimeInfo::requestDataFromServer(const QString &windCode, bool isRea
             rt_asize1,rt_asize2,rt_asize3,rt_asize4,rt_asize5";
 
     if (isRealtime) {
-        reqID = MyWSQ(this->windCode, indicators.c_str(), L"REALTIME=Y", dataPro, this);
+        reqID = MyWSQ(this->bondCode, indicators.c_str(), L"REALTIME=Y", dataPro, this);
     } else {
-        reqID = MyWSQ(this->windCode, indicators.c_str(), L"REALTIME=N", dataPro, this);
+        reqID = MyWSQ(this->bondCode, indicators.c_str(), L"REALTIME=N", dataPro, this);
     }
 
     bool res = false;
@@ -73,7 +68,7 @@ bool BondRealtimeInfo::requestDataFromServer(const QString &windCode, bool isRea
 
 bool BondRealtimeInfo::requestDataFromServer(bool isRealtime) {
 //    qDebug() << Q_FUNC_INFO();
-    return requestDataFromServer(this->windCode, isRealtime);
+    return requestDataFromServer(this->bondCode, isRealtime);
 }
 
 bool BondRealtimeInfo::cancelRequest() {
@@ -86,21 +81,6 @@ bool BondRealtimeInfo::cancelRequest() {
         reqID = 0; //请求号清零
     }
     return res;
-}
-
-void BondRealtimeInfo::setBond_db_info(BondType bType, QString code, QString name, InterestType iType, double faceValue, QMap<QDate, double> coupons, double paymentFrequency, QDate carryDate, QDate listDate, QDate offlistDate, QDate MaturityDate, double IssueAmount) {
-    this->bond_db_info.bType = bType;
-    this->bond_db_info.code = code;
-    this->bond_db_info.name = name;
-    this->bond_db_info.iType = iType;
-    this->bond_db_info.faceValue = faceValue;
-    this->bond_db_info.coupons = coupons;
-    this->bond_db_info.paymentFrequency = paymentFrequency;
-    this->bond_db_info.carryDate = carryDate;
-    this->bond_db_info.listDate = listDate;
-    this->bond_db_info.offlistDate = offlistDate;
-    this->bond_db_info.MaturityDate = MaturityDate;
-    this->bond_db_info.IssueAmount = IssueAmount;
 }
 
 
@@ -124,7 +104,7 @@ int BondRealtimeInfo::dataPro(WQEvent* pEvent, LPVOID pParam) {
 
                     BondRealtimeData &temp = pSri->realtimedata;
                     temp.date_db = pEvent->pQuantData->ArrDateTime.timeArray[0];
-                    temp.windCode = pSri->windCode;
+                    temp.windCode = pSri->bondCode;
                     //C++ switch 不支持字符串case
                     for (int i = 0; i < indnum; i++) {
                         //最高最低价，均价
