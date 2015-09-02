@@ -26,7 +26,7 @@ int BondHandler::clear() {
 
 
 void BondHandler::init() {
-    qDebug() << Q_FUNC_INFO;
+//    qDebug() << "BONDHANDLER::INIT";
     //Wind 行情认证
     if(!BaseWindQuant::WindAuthorize())
     {
@@ -35,7 +35,7 @@ void BondHandler::init() {
     }
 
     if (bondPool = NULL) {
-        bondPool = new BondPool();
+        bondPool = BondPool::getInstance();
     }
     bond_db = new BaseMySql();
     bond_db->Open(IDataBase::getProperty("TreasuryBondMySQL/DatabaseName").toString(),
@@ -47,7 +47,6 @@ void BondHandler::init() {
 }
 
 void BondHandler::selectBondFromDb() {
-    qDebug() << Q_FUNC_INFO;
     QString qry = QString("select tb_code from treasury_bond_info where record_date = '%1'").arg(QDate::currentDate().toString("yyyy-MM-dd"));
     QSqlQuery codes_qry(qry, *bond_db->getMyDB());
     int codesNumber = codes_qry.size();
@@ -58,11 +57,11 @@ void BondHandler::selectBondFromDb() {
     while (codes_qry.next()) {
         codeslist.append(codes_qry.value(0).toString());
     }
-    qDebug() << "codeslist size = " <<codeslist.size();
+//    qDebug() << "codeslist size = " <<codeslist.size();
+    bondPool->init(codeslist);
+
 
     qry = QString("select tb_code, tb_name, face_value, interest_type, coupons, payment_frequency, issue_amount, carry_date, maturity_date, list_date, off_list_date, record_date from treasury_bond_info where record_date = '%1'").arg(QDate::currentDate().toString("yyyy-MM-dd"));
-//    QString qry = QString("select tb_code, tb_name, face_value, interest_type, coupons, payment_frequency, issue_amount, carry_date, maturity_date, list_date, off_list_date, record_date from treasury_bond_info");
-//    qDebug() <<qry;
     QSqlQuery query(qry, *bond_db->getMyDB());
 //    qDebug() << "total database rows = " << recordNumber;
 
@@ -105,6 +104,10 @@ void BondHandler::selectBondFromDb() {
 
 }
 
+
+BondHandler *BondHandler::getInstance() {
+    return &g_instance;
+}
 
 BondPool *BondHandler::getBondPoolInstance() {
     return this->bondPool;

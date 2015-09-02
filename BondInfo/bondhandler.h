@@ -18,12 +18,17 @@ public:
     void selectBondFromDb();
 
 
-    BondPool *getBondPoolInstance();
 
 //protected:
     BaseMySql *bond_db;
     BondPool *bondPool;
 
+public:
+    static BondHandler *getInstance();
+    BondPool *getBondPoolInstance();
+
+private:
+    static BondHandler g_instance;
 
 signals:
 
