@@ -5,38 +5,40 @@
 #include <QStringList>
 #include <QMap>
 
-#include "bondrealtimeinfo.h"
+#include "basebond.h"
 
 //债券池，单例模式
 class BondPool
 {
 public:
-
-    int init(const QStringList windCodesList);
-    int clear();
-
-    bool requestDataFromServer();
-    bool cancelRequestFromServer();
-
+    /////////////////////////////////////////////////
+    int getwindCodesNumber();
     static BondPool *getInstance();
     const QStringList *getWindCodes();
-    int getwindCodesNumber();
-    const QMap<QString, BondRealtimeInfo*> *getBond_Info_map();
+    const QMap<QString, BaseBond*> *getBondMap();
+    /////////////////////////////////////////////////
 
-
-
-protected:
     BondPool();
     ~BondPool();
 
+    int init(const QStringList &windCodesList);
+    int clear();
+
+    bool requestDataFromWind();
+    bool cancelRequestFromWind();
+
+
+
+//protected:
     bool isInit;
     bool isReq;
 
     int windCodesNumber;
     QStringList windCodes;
-    QMap<QString, BondRealtimeInfo*> bond_info_map;
 
-private:
+    QMap<QString, BaseBond*> bondMap;
+
+//private:
     static BondPool g_instance;
 
 
