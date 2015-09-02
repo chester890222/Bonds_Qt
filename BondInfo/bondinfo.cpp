@@ -7,7 +7,7 @@ BondInfo::BondInfo(QWidget *parent) :
 {
     ui->setupUi(this);
     bondhandler = new BondHandler();
-    bondhandler->Init();
+    bondhandler->init();
 }
 
 BondInfo::~BondInfo()

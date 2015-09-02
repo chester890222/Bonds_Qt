@@ -1,6 +1,8 @@
 #include "bondpool.h"
 #include "BaseWindQuant.h"
 
+BondPool BondPool::g_instance;
+
 BondPool::BondPool() {
     isInit = false;
     isReq = false;
@@ -11,16 +13,16 @@ BondPool::~BondPool() {
     clear();
 }
 
-int BondPool::init(const QStringList windCodesList) {
+int BondPool::init(const QStringList &windCodesList) {
     if (isInit) {
         clear();
     }
 
-    windCodesNumber = windCodes.Number();
+    windCodesNumber = windCodesList.size();
     for (int i=0; i < this->windCodesNumber; i++) {
-        BondRealtimeInfo *realtimeInfoTemp = new BondRealtimeInfo(windCodesList[i]);
-        windCodes.append(windCodesList[i]);
-        bond_info_map.insert(windCodesList[i], realtimeInfoTemp);
+        BaseBond *baseBondTemp = new BaseBond(windCodesList.at(i));
+        windCodes.append(windCodesList.at(i));
+        bondMap.insert(windCodesList.at(i), baseBondTemp);
     }
 
     isInit = true;
@@ -31,13 +33,13 @@ int BondPool::init(const QStringList windCodesList) {
 int BondPool::clear() {
     if (isInit) {
         if (isReq) {
-            cancelRequestFromServer();
+            cancelRequestFromWind();
         }
         this->windCodesNumber = 0;
         this->windCodes.clear();
 
-        qDeleteAll(bond_info_map);
-        bond_info_map.clear();
+        qDeleteAll(bondMap);
+        bondMap.clear();
 
 
     }
@@ -46,11 +48,13 @@ int BondPool::clear() {
     return 0;
 }
 
-bool BondPool::requestDataFromServer() {
+bool BondPool::requestDataFromWind() {
 //########################################
+    bool res = false;
+    return res;
 }
 
-bool BondPool::cancelRequestFromServer() {
+bool BondPool::cancelRequestFromWind() {
     bool res = false;
     if (!isInit) return res;
     if (isReq) {
@@ -61,8 +65,8 @@ bool BondPool::cancelRequestFromServer() {
 }
 
 
-static BondPool *BondPool::getInstance() {
-    return &this->g_instance;
+BondPool *BondPool::getInstance() {
+    return &g_instance;
 }
 
 const QStringList *BondPool::getWindCodes() {
@@ -73,8 +77,8 @@ int BondPool::getwindCodesNumber() {
     return this->windCodesNumber;
 }
 
-const QMap<QString, BondRealtimeInfo*> *BondPool::getBond_Info_map() {
-    return &this->bond_info_map;
+const QMap<QString, BaseBond*> *BondPool::getBondMap() {
+    return &this->bondMap;
 }
 
 

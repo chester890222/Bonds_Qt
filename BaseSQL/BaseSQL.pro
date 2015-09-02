@@ -1,24 +1,29 @@
 #-------------------------------------------------
 #
-# Project created by QtCreator 2015-08-20T11:15:02
+# Project created by QtCreator 2015-04-02T10:28:43
 #
 #-------------------------------------------------
 
-QT       += core gui sql
+QT       += core  sql
 greaterThan(QT_MAJOR_VERSION, 4): QT += widgets
 
 TARGET = BaseSQL
 TEMPLATE = lib
+
+#DEFINES += BASESQL_LIBRARY
 CONFIG += staticlib
 
-#include($$PWD/../bonds.pri)
 
 DESTDIR = ../bin/lib
 
-SOURCES += basemysql.cpp
+SOURCES += BaseMySql.cpp \
+    BaseSqlite.cpp
 
-HEADERS += basemysql.h \
+HEADERS += basesql_global.h \
+    BaseMySql.h \
+    BaseSqlite.h \
     IDataBase.h
+
 
 unix {
     target.path = /usr/lib
