@@ -26,7 +26,7 @@ win32{
         contains(MYBASE,BaseMarket):LIBS += ../bin/lib/BaseMarket.lib
         contains(MYBASE,BaseTrade):LIBS += ../bin/lib/BaseTrade.lib
         contains(MYBASE,BaseSQL):LIBS += ../bin/lib/BaseSQL.lib
-        contains(MYBASE,BaseBond):INCLUDEPATH += ../BaseBond.lib
+        contains(MYBASE,BaseBond):LIBS += ../bin/lib/BaseBond.lib
         contains(MYBASE,BaseTrade) {
             contains(DEFINES,useXtTraderApi){
                 LIBS+=$$PWD/BaseTrade/MyXtTrader/XtTraderApi/XtTraderApi.lib

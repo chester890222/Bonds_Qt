@@ -5,9 +5,10 @@ BondInfo::BondInfo(QWidget *parent) :
     QWidget(parent),
     ui(new Ui::BondInfo)
 {
+    qDebug() << Q_FUNC_INFO;
     ui->setupUi(this);
     bondhandler = new BondHandler();
-    bondhandler->Init();
+    bondhandler->init();
 }
 
 BondInfo::~BondInfo()

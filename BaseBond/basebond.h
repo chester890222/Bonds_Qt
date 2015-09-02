@@ -1,6 +1,7 @@
 #ifndef BASEBOND_H
 #define BASEBOND_H
 
+#include <QObject>
 #include <QString>
 #include <QDate>
 #include <QMap>
@@ -50,14 +51,14 @@ public:
 };
 
 
-class BaseBond : public BondRealtimeInfo
+class BaseBond : public QObject, public BondRealtimeInfo
 {
     Q_OBJECT
 public:
     BaseBond(const QString &code);
 
 //protected:
-//    QString bondCode;
+
     Bond_db_info bond_db_info;
 //    BondRealtimeInfo bondRealtimeInfo;
 

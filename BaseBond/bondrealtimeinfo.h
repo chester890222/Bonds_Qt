@@ -33,7 +33,7 @@ public:
 
 
 
-class BondRealtimeInfo : public BaseWindQuant
+class BondRealtimeInfo : public QObject, public BaseWindQuant
 {
     Q_OBJECT
 public:

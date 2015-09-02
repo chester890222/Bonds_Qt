@@ -39,7 +39,7 @@ public:
         if(db.isOpen())
             db.close();
 
-        qDebug()<<Q_FUNC_INFO<<" ok";
+//        qDebug()<<Q_FUNC_INFO<<" ok";
     }
 
     void Transaction()
@@ -59,7 +59,7 @@ public:
     //.ini
     static void setProperty(QString groupName,QString key,QString value)
     {
-        QString fileName = "configSql.ini";
+        QString fileName = "../configSql.ini";
         QSettings *settings = new QSettings(fileName,QSettings::IniFormat);
         settings->beginGroup(groupName);
         settings->setValue(key,value);
@@ -68,7 +68,7 @@ public:
 
     static QVariant getProperty(QString key)
     {
-        QString fileName = "configSql.ini";
+        QString fileName = "../configSql.ini";
         QSettings *settings = new QSettings(fileName,QSettings::IniFormat);
         return settings->value(key);
     }

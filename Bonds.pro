@@ -4,8 +4,8 @@ SUBDIRS += \
     BaseMarket \
     BaseSQL \
     BaseBond \
-    BondMain \
-    BondInfo
+    BondInfo \
+    BondMain
 
 
 CONFIG += ordered

@@ -5,6 +5,7 @@
 #-------------------------------------------------
 
 QT       += core sql
+greaterThan(QT_MAJOR_VERSION, 4): QT += widgets
 
 TARGET = BaseBond
 TEMPLATE = lib
@@ -12,14 +13,10 @@ CONFIG += staticlib
 
 DESTDIR = ../bin/lib
 
+#DEFINES += BASEBOND_LIBRARY
+
 MYBASE += BaseMarket BaseSQL
 include($$PWD/../bonds.pri)
-#LIBS += ../bin/lib/BaseMarket.lib\
-#        ../bin/lib/BaseSQL.lib
-
-
-#INCLUDEPATH += ../BaseMarket\
-#               ../BaseSQL\
 
 
 SOURCES += basebond.cpp \

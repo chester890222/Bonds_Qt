@@ -20,7 +20,7 @@ public:
 
     BondPool *getBondPoolInstance();
 
-protected:
+//protected:
     BaseMySql *bond_db;
     BondPool *bondPool;
 

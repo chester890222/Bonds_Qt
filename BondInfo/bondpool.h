@@ -11,6 +11,8 @@
 class BondPool
 {
 public:
+    BondPool();
+    ~BondPool();
 
     int init(const QStringList &windCodesList);
     int clear();
@@ -23,10 +25,7 @@ public:
     const QStringList *getWindCodes();
     const QMap<QString, BaseBond*> *getBondMap();
 
-protected:
-    BondPool();
-    ~BondPool();
-
+//protected:
     bool isInit;
     bool isReq;
 
@@ -34,7 +33,7 @@ protected:
     QStringList windCodes;
     QMap<QString, BaseBond*> bondMap;
 
-private:
+//private:
     static BondPool g_instance;
 
 
