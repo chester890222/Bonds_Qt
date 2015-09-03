@@ -1,8 +1,23 @@
 #include "bondhandler.h"
 #include <QDebug>
+#include <QMessageBox>
 
-BondHandler::BondHandler(QObject *parent) : QObject(parent)
-{
+BondHandler BondHandler::g_instance;
+
+/////////////////////////////////////////////////////////////
+BondHandler *BondHandler::getInstance() {
+    return &g_instance;
+}
+
+BondPool *BondHandler::getBondPoolInstance() {
+    return this->bondPool;
+}
+/////////////////////////////////////////////////////////////
+
+BondHandler::BondHandler(QObject *parent) : QObject(parent) {
+    bondPool = NULL;
+    bond_db = NULL;
+    isInit = FALSE;
 }
 
 BondHandler::~BondHandler() {
@@ -10,8 +25,13 @@ BondHandler::~BondHandler() {
 }
 
 int BondHandler::clear() {
+    if (!isInit) {
+        return 0;
+    }
 
     if (bond_db != NULL) {
+        //需要关闭数据库!!!!!!
+
         delete bond_db;
         bond_db = NULL;
     }
@@ -28,8 +48,7 @@ int BondHandler::clear() {
 void BondHandler::init() {
 //    qDebug() << "BONDHANDLER::INIT";
     //Wind 行情认证
-    if(!BaseWindQuant::WindAuthorize())
-    {
+    if(!BaseWindQuant::WindAuthorize()) {
         QMessageBox::critical(0,"ERROR:","WindQuant认证失败");
         return;
     }
@@ -47,19 +66,20 @@ void BondHandler::init() {
 }
 
 void BondHandler::selectBondFromDb() {
+
     QString qry = QString("select tb_code from treasury_bond_info where record_date = '%1'").arg(QDate::currentDate().toString("yyyy-MM-dd"));
     QSqlQuery codes_qry(qry, *bond_db->getMyDB());
     int codesNumber = codes_qry.size();
     if (codesNumber == 0) {
-        qDebug() << "Something wrong in select from MySQL! codes number = 0";
+        QMessageBox::critical(0,"Error:","MySQL数据库查询失败！");
     }
+
     QStringList codeslist;
     while (codes_qry.next()) {
         codeslist.append(codes_qry.value(0).toString());
     }
-//    qDebug() << "codeslist size = " <<codeslist.size();
-    bondPool->init(codeslist);
 
+    bondPool->init(codeslist);
 
     qry = QString("select tb_code, tb_name, face_value, interest_type, coupons, payment_frequency, issue_amount, carry_date, maturity_date, list_date, off_list_date, record_date from treasury_bond_info where record_date = '%1'").arg(QDate::currentDate().toString("yyyy-MM-dd"));
     QSqlQuery query(qry, *bond_db->getMyDB());
@@ -78,7 +98,6 @@ void BondHandler::selectBondFromDb() {
     int ind_off_list_date = query.record().indexOf("off_list_date");
     int ind_record_date = query.record().indexOf("record_date");
 
-//    qDebug() <<"tb_code index = " << ind_tb_code << "tb_name index = " << ind_tb_name;
 //    int colMcode  = query.record().indexOf("codeM");
 //    int colAcode = query.record().indexOf("codeA");
 //    int colAratio = query.record().indexOf("ratioA");
@@ -105,13 +124,6 @@ void BondHandler::selectBondFromDb() {
 }
 
 
-BondHandler *BondHandler::getInstance() {
-    return &g_instance;
-}
-
-BondPool *BondHandler::getBondPoolInstance() {
-    return this->bondPool;
-}
 
 
 
