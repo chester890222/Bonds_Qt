@@ -1,7 +1,9 @@
 #include "bondpool.h"
 #include "BaseWindQuant.h"
+#include <QDebug>
 
 BondPool BondPool::g_instance;
+
 
 BondPool::BondPool() {
     isInit = false;
@@ -14,6 +16,7 @@ BondPool::~BondPool() {
 }
 
 int BondPool::init(const QStringList &windCodesList) {
+//    qDebug() << Q_FUNC_INFO;
     if (isInit) {
         clear();
     }
@@ -40,8 +43,6 @@ int BondPool::clear() {
 
         qDeleteAll(bondMap);
         bondMap.clear();
-
-
     }
 
     isInit = false;
@@ -50,6 +51,8 @@ int BondPool::clear() {
 
 bool BondPool::requestDataFromWind() {
 //########################################
+    if (!isInit) return false;
+
     bool res = false;
     return res;
 }
@@ -80,5 +83,4 @@ int BondPool::getwindCodesNumber() {
 const QMap<QString, BaseBond*> *BondPool::getBondMap() {
     return &this->bondMap;
 }
-
 

@@ -46,15 +46,11 @@ int BondHandler::clear() {
 
 
 void BondHandler::init() {
-//    qDebug() << "BONDHANDLER::INIT";
+    //    qDebug() << "BONDHANDLER::INIT";
     //Wind 行情认证
     if(!BaseWindQuant::WindAuthorize()) {
         QMessageBox::critical(0,"ERROR:","WindQuant认证失败");
         return;
-    }
-
-    if (bondPool = NULL) {
-        bondPool = BondPool::getInstance();
     }
     bond_db = new BaseMySql();
     bond_db->Open(IDataBase::getProperty("TreasuryBondMySQL/DatabaseName").toString(),
@@ -62,28 +58,35 @@ void BondHandler::init() {
                   IDataBase::getProperty("TreasuryBondMySQL/Password").toString(),
                   IDataBase::getProperty("TreasuryBondMySQL/HostName").toString()
                   );
+    setBondCodes();
     selectBondFromDb();
 }
 
-void BondHandler::selectBondFromDb() {
-
+int BondHandler::setBondCodes() {
+    qDebug() << Q_FUNC_INFO;
     QString qry = QString("select tb_code from treasury_bond_info where record_date = '%1'").arg(QDate::currentDate().toString("yyyy-MM-dd"));
     QSqlQuery codes_qry(qry, *bond_db->getMyDB());
     int codesNumber = codes_qry.size();
     if (codesNumber == 0) {
-        QMessageBox::critical(0,"Error:","MySQL数据库查询失败！");
+        QMessageBox::critical(0,"Error:","MySQL error: no value are selected!");
+        return -1;
     }
-
     QStringList codeslist;
     while (codes_qry.next()) {
         codeslist.append(codes_qry.value(0).toString());
     }
 
+    bondPool = BondPool::getInstance();
     bondPool->init(codeslist);
 
-    qry = QString("select tb_code, tb_name, face_value, interest_type, coupons, payment_frequency, issue_amount, carry_date, maturity_date, list_date, off_list_date, record_date from treasury_bond_info where record_date = '%1'").arg(QDate::currentDate().toString("yyyy-MM-dd"));
+    return 0;
+}
+
+void BondHandler::selectBondFromDb() {
+    qDebug() << Q_FUNC_INFO;
+
+    QString qry = QString("select tb_code, tb_name, face_value, interest_type, coupons, payment_frequency, issue_amount, carry_date, maturity_date, list_date, off_list_date, record_date from treasury_bond_info where record_date = '%1'").arg(QDate::currentDate().toString("yyyy-MM-dd"));
     QSqlQuery query(qry, *bond_db->getMyDB());
-//    qDebug() << "total database rows = " << recordNumber;
 
     int ind_tb_code = query.record().indexOf("tb_code");
     int ind_tb_name = query.record().indexOf("tb_name");
@@ -97,31 +100,25 @@ void BondHandler::selectBondFromDb() {
     int ind_list_date = query.record().indexOf("list_date");
     int ind_off_list_date = query.record().indexOf("off_list_date");
     int ind_record_date = query.record().indexOf("record_date");
+    QString code;
+    while (query.next()) {
+        code = query.value(ind_tb_code).toString();
+        bondPool->bondMap[code]->setBond_db_info("Treasury",
+                                                 query.value(ind_tb_code).toString(),
+                                                 query.value(ind_tb_name).toString(),
+                                                 query.value(ind_interest_type).toString(),
+                                                 query.value(ind_face_value).toDouble(),
+                                                 query.value(ind_coupons).toString(),
+                                                 query.value(ind_payment_frequency).toDouble(),
+                                                 query.value(ind_carry_date).toDate(),
+                                                 query.value(ind_list_date).toDate(),
+                                                 query.value(ind_off_list_date).toDate(),
+                                                 query.value(ind_maturity_date).toDate(),
+                                                 query.value(ind_issue_amount).toDouble());
 
-//    int colMcode  = query.record().indexOf("codeM");
-//    int colAcode = query.record().indexOf("codeA");
-//    int colAratio = query.record().indexOf("ratioA");
-//    int colBcode = query.record().indexOf("codeB");
-//    int colBratio = query.record().indexOf("ratioB");
-//    QString acode;
-//    double apct;
-//    double bpct;
-//    while(query.next())
-//    {
-//        acode =  query.value(colAcode).toString();
-//        gLfaInfo[acode].Mcode = query.value(colMcode).toString();
-//        gLfaInfo[acode].Acode = acode;
-//        gLfaInfo[acode].Bcode = query.value(colBcode).toString();
-//        apct = query.value(colAratio).toDouble();
-//        bpct = query.value(colBratio).toDouble();
-//        gLfaInfo[acode].Aratio = apct/(apct+bpct);
-//        gLfaInfo[acode].Bratio = bpct/(apct+bpct);
-//    }
-
-//    if(gLfaInfo.isEmpty() || 0== gLfaInfo.count())
-//        QMessageBox::critical(0,"Error:","数据库提取分级基金数据失败，无法提供配对分级A、B为权益的功能.\n\rerror info:"+query.lastError().text());
-
+    }
 }
+
 
 
 

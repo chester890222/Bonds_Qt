@@ -13,21 +13,21 @@ class BondHandler : public QObject
 {
     Q_OBJECT
 
-
 public:
-    /////////////////////////////////////////////////////////
+    //////////////////////////////////////////
     static BondHandler *getInstance();
     BondPool *getBondPoolInstance();
-    /////////////////////////////////////////////////////////
+    //////////////////////////////////////////
+
+    explicit BondHandler(QObject *parent = 0);
+    ~BondHandler();
 
     void init();
     int clear();
     void selectBondFromDb();
 
+    int setBondCodes();
 
-public:
-    explicit BondHandler(QObject *parent = 0);
-    ~BondHandler();
 
 protected:
     bool isInit;
@@ -37,6 +37,7 @@ protected:
 
 private:
     static BondHandler g_instance;
+
 
 signals:
 

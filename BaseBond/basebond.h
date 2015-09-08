@@ -14,7 +14,7 @@ enum BondType {
     Financial=2,//tr("金融债"),
     Corporate=3,//tr("公司债"),
     Enterprise=4,//tr("企业债"),
-    Covertible=5,//tr("可转换债"),
+    Convertible=5,//tr("可转换债"),
     Exchangable=6 //tr("可交换债")
 };
 
@@ -51,15 +51,28 @@ public:
 };
 
 
-class BaseBond : public QObject, public BondRealtimeInfo
+class BaseBond : public BondRealtimeInfo, Bond_db_info
 {
     Q_OBJECT
 public:
     BaseBond(const QString &code);
 
-//protected:
+    void setBond_db_info(QString bType, QString code, QString name,
+                         QString iType, double faceValue,
+                         QString coupons, double paymentFrequency,
+                         QDate carryDate, QDate listDate,
+                         QDate offlistDate,QDate maturityDate,
+                         double issueAmount);
 
-    Bond_db_info bond_db_info;
+    double cal_accInterest();
+    double cal_timeToMaturity();
+    double cal_currentCoupon();
+
+    void cal_YTMs();
+
+protected:
+
+//    Bond_db_info bond_db_info;
 //    BondRealtimeInfo bondRealtimeInfo;
 
     double rt_vwap_YTM;
@@ -74,11 +87,7 @@ public:
     double timeToMaturity;
     double currentCoupon;
 
-    double cal_accInterest();
-    double cal_timeToMaturity();
-    double cal_currentCoupon();
 
-    void cal_YTMs();
 };
 
 #endif // BASEBOND_H
