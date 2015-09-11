@@ -5,6 +5,8 @@
 #include "basemysql.h"
 
 #include "bondhandler.h"
+#include "model_bonds_info_table.h"
+
 
 namespace Ui {
 class BondInfo;
@@ -20,6 +22,9 @@ public:
 
 protected:
     BondHandler *bondhandler;
+
+    Model_Bonds_Info_Table *model_bonds_info_table;
+
 
 private:
     Ui::BondInfo *ui;

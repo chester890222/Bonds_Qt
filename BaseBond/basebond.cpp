@@ -6,6 +6,10 @@ BaseBond::BaseBond(const QString &code) : BondRealtimeInfo(code) {
 //    bondCode = Code;
 }
 
+BaseBond::~BaseBond() {
+
+}
+
 void BaseBond::setBond_db_info(QString BType, QString Code, QString Name,
                      QString IType, double FaceValue,
                      QString Coupons, double PaymentFrequency,
