@@ -20,10 +20,12 @@ include($$PWD/../bonds.pri)
 SOURCES += main.cpp\
         bondinfo.cpp \
     bondhandler.cpp \
-    bondpool.cpp
+    bondpool.cpp \
+    model_bonds_info_table.cpp
 
 HEADERS  += bondinfo.h \
     bondhandler.h \
-    bondpool.h
+    bondpool.h \
+    model_bonds_info_table.h
 
 FORMS    += bondinfo.ui

@@ -38,13 +38,13 @@ class BondRealtimeInfo : public QObject, public BaseWindQuant
     Q_OBJECT
 public:
     BondRealtimeInfo(const QString &windCode);
-    virtual ~BondRealtimeInfo();
+    ~BondRealtimeInfo();
 
     //获取股票的实时数据
     //isRealtime = false 获取一次性快照数据
     //isRealtime = true 获取订阅实时数据
-    bool requestDataFromServer(const QString &windCode, bool isRealtime = false);
-    bool requestDataFromServer(bool isRealtime = false);
+    bool requestDataFromWind(const QString &windCode, bool isRealtime = false);
+    bool requestDataFromWind(bool isRealtime = false);
 
     //取消对该只股票实时数据的订阅
     bool cancelRequest();
@@ -63,7 +63,7 @@ public:
     BondRealtimeData        realtimedata;
 
 signals:
-    void signal_realtimedata_refresh();
+    void signal_realtimedata_refresh(QString);
 
 signals:
 

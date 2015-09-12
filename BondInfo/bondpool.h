@@ -8,8 +8,10 @@
 #include "basebond.h"
 
 //债券池，单例模式
-class BondPool
+class BondPool : public QObject
 {
+    Q_OBJECT
+
 public:
     /////////////////////////////////////////////////
     int getwindCodesNumber();
@@ -18,7 +20,7 @@ public:
     const QMap<QString, BaseBond*> *getBondMap();
     /////////////////////////////////////////////////
 
-    BondPool();
+    explicit BondPool(QObject *parent=0);
     ~BondPool();
 
     int init(const QStringList &windCodesList);
@@ -41,7 +43,11 @@ public:
 //private:
     static BondPool g_instance;
 
+signals:
+    void signal_RealtimeDataUpdate();
 
+public slots:
+    void slot_RealtimeDataUpdate(QString code);
 
 };
 

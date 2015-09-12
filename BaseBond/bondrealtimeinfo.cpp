@@ -37,7 +37,7 @@ const BondRealtimeData* BondRealtimeInfo::getBondRealtimeData() const{
 
 ////////////////////////////////////////////////////////////
 
-bool BondRealtimeInfo::requestDataFromServer(const QString &windCode, bool isRealtime) {
+bool BondRealtimeInfo::requestDataFromWind(const QString &windCode, bool isRealtime) {
 //    qDebug() << Q_FUNC_INFO();
 
     this->bondCode = windCode;
@@ -66,9 +66,9 @@ bool BondRealtimeInfo::requestDataFromServer(const QString &windCode, bool isRea
     return res;
 }
 
-bool BondRealtimeInfo::requestDataFromServer(bool isRealtime) {
+bool BondRealtimeInfo::requestDataFromWind(bool isRealtime) {
 //    qDebug() << Q_FUNC_INFO();
-    return requestDataFromServer(this->bondCode, isRealtime);
+    return requestDataFromWind(this->bondCode, isRealtime);
 }
 
 bool BondRealtimeInfo::cancelRequest() {
@@ -207,7 +207,7 @@ int BondRealtimeInfo::dataPro(WQEvent* pEvent, LPVOID pParam) {
             }
         }
     }
-    emit pSri->signal_realtimedata_refresh();
+    emit pSri->signal_realtimedata_refresh(pSri->bondCode);
 
     return 0;
 }

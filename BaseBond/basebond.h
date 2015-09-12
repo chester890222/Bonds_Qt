@@ -51,11 +51,12 @@ public:
 };
 
 
-class BaseBond : public BondRealtimeInfo, Bond_db_info
+class BaseBond : public BondRealtimeInfo, public Bond_db_info
 {
     Q_OBJECT
 public:
     BaseBond(const QString &code);
+    ~BaseBond();
 
     void setBond_db_info(QString bType, QString code, QString name,
                          QString iType, double faceValue,

@@ -1,6 +1,7 @@
 #include "bondhandler.h"
-#include <QDebug>
 #include <QMessageBox>
+
+#include <QDebug>
 
 BondHandler BondHandler::g_instance;
 
@@ -21,13 +22,13 @@ BondHandler::BondHandler(QObject *parent) : QObject(parent) {
 }
 
 BondHandler::~BondHandler() {
+    qDebug()<<Q_FUNC_INFO;
+
     clear();
 }
 
 int BondHandler::clear() {
-    if (!isInit) {
-        return 0;
-    }
+    qDebug()<<Q_FUNC_INFO;
 
     if (bond_db != NULL) {
         //需要关闭数据库!!!!!!
@@ -36,11 +37,12 @@ int BondHandler::clear() {
         bond_db = NULL;
     }
     if (bondPool != NULL) {
-        bondPool->cancelRequestFromWind();
+//        bondPool->cancelRequestFromWind();
         bondPool->clear();
+        delete bondPool;
         bondPool = NULL;
     }
-
+    qDebug() << Q_FUNC_INFO << "DONE!";
     return 0;
 }
 
