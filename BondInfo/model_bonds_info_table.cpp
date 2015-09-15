@@ -36,8 +36,10 @@ QVariant Model_Bonds_Info_Table::data(const QModelIndex &index, int role) const 
         QString tmp_code = CurData->keys().at(index.row());
         if("WindCode"==currCol)
             return tmp_code;
-        else if("Bond Name" == currCol)
+        else if ("Bond Name" == currCol)
             return CurData->value(tmp_code)->name;
+        else if ("Last" == currCol)
+            return CurData->value(tmp_code)->realtimedata.rt_last;
 //        else if("OrderNumber" == currCol)
 //            return CurData->at(index.row()).orderNumber;
 //        else if("OrderDate" == currCol)
@@ -93,6 +95,7 @@ void Model_Bonds_Info_Table::setCurCol(QStringList col) {
 }
 
 void Model_Bonds_Info_Table::slot_refreshData() {
+    qDebug() << Q_FUNC_INFO;
     beginResetModel();
     endResetModel();
 }

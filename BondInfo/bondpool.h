@@ -4,11 +4,13 @@
 #include <QObject>
 #include <QStringList>
 #include <QMap>
+#include <QReadWriteLock>
 
 #include "basebond.h"
+#include "BaseWindQuant.h"
 
 //债券池，单例模式
-class BondPool : public QObject
+class BondPool : public QObject, public BaseWindQuant
 {
     Q_OBJECT
 
@@ -26,14 +28,17 @@ public:
     int init(const QStringList &windCodesList);
     int clear();
 
-    bool requestDataFromWind();
+    bool requestDataFromWind(QString indicators, bool isRealtime = false);
     bool cancelRequestFromWind();
 
+    static int WINAPI dataPro(WQEvent* pEvent, LPVOID pParam);
 
 
 //protected:
     bool isInit;
     bool isReq;
+    WQID reqID;
+//    QReadWriteLock *RWLock_realtime;
 
     int windCodesNumber;
     QStringList windCodes;
@@ -44,10 +49,10 @@ public:
     static BondPool g_instance;
 
 signals:
-    void signal_RealtimeDataUpdate();
+    void signal_RealtimeDataUpdate(QStringList);
 
 public slots:
-    void slot_RealtimeDataUpdate(QString code);
+//    void slot_RealtimeDataUpdate(QStringList &codeList);
 
 };
 

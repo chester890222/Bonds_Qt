@@ -22,8 +22,9 @@ public:
     void init();
     int clear();
     void selectBondFromDb();
+    void selectBondFromDb(QStringList codesList);
 
-    int setBondCodes();
+    QStringList getBondCodes();
 
 
 protected:
