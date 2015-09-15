@@ -7,7 +7,7 @@ BaseBond::BaseBond(const QString &code) : BondRealtimeInfo(code) {
 }
 
 BaseBond::~BaseBond() {
-
+//    qDebug() << Q_FUNC_INFO;
 }
 
 void BaseBond::setBond_db_info(QString BType, QString Code, QString Name,

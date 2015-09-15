@@ -12,7 +12,7 @@ BondRealtimeInfo::BondRealtimeInfo(const QString &windCode) : BaseWindQuant() {
 }
 
 BondRealtimeInfo::~BondRealtimeInfo() {
-//    qDebug() << "BondRealtimeInfo::~BondRealtimeInfo is called on thread " << QThread::currentThreadId();
+//    qDebug() << Q_FUNC_INFO;
     if (RWLock_realtime != NULL) {
         delete RWLock_realtime;
         RWLock_realtime = NULL;
