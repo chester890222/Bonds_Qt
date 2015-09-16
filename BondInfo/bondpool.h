@@ -38,12 +38,11 @@ public:
     bool isInit;
     bool isReq;
     WQID reqID;
-//    QReadWriteLock *RWLock_realtime;
 
     int windCodesNumber;
     QStringList windCodes;
 
-    QMap<QString, BaseBond*> bondMap;
+    QMap<QString, BaseBond*> *bondMap;
 
 //private:
     static BondPool g_instance;
@@ -52,7 +51,6 @@ signals:
     void signal_RealtimeDataUpdate(QStringList);
 
 public slots:
-//    void slot_RealtimeDataUpdate(QStringList &codeList);
 
 };
 

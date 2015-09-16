@@ -25,9 +25,14 @@ BondInfo::~BondInfo()
 {
     qDebug() <<Q_FUNC_INFO;
     if (bondhandler != NULL) {
-        bondhandler->clear();
         delete bondhandler;
         bondhandler = NULL;
     }
+    if (model_bonds_info_table != NULL) {
+        delete model_bonds_info_table;
+        model_bonds_info_table = NULL;
+    }
+
+
     delete ui;
 }
