@@ -24,6 +24,7 @@ int BondHandler::clear() {
     }
     if (bondPool != NULL) {
 //        bondPool->cancelRequestFromWind();
+        bondPool->clear();
         delete bondPool;
         bondPool = NULL;
     }
@@ -100,7 +101,7 @@ void BondHandler::selectBondFromDb() {
     QString code;
     while (query.next()) {
         code = query.value(ind_tb_code).toString();
-        bondPool->bondMap[code]->setBond_db_info("Treasury",
+        bondPool->bondMap->value(code)->setBond_db_info("Treasury",
                                                  query.value(ind_tb_code).toString(),
                                                  query.value(ind_tb_name).toString(),
                                                  query.value(ind_interest_type).toString(),
@@ -118,8 +119,9 @@ void BondHandler::selectBondFromDb() {
 
 void BondHandler::selectBondFromDb(QStringList codesList) {
     qDebug() << Q_FUNC_INFO;
-    QString codes = codesList.join(",");
-    QString qry = QString("select tb_code, tb_name, face_value, interest_type, coupons, payment_frequency, issue_amount, carry_date, maturity_date, list_date, off_list_date, record_date from treasury_bond_info where tb_code = '%1'").arg(codes);
+    QString codes = codesList.join("','");
+    QString qry = QString("select tb_code, tb_name, face_value, interest_type, coupons, payment_frequency, issue_amount, carry_date, maturity_date, list_date, off_list_date, record_date from treasury_bond_info where tb_code in ('%1')").arg(codes);
+    qDebug() << qry;
     QSqlQuery query(qry, *bond_db->getMyDB());
 
     int ind_tb_code = query.record().indexOf("tb_code");
@@ -137,7 +139,7 @@ void BondHandler::selectBondFromDb(QStringList codesList) {
     QString code;
     while (query.next()) {
         code = query.value(ind_tb_code).toString();
-        bondPool->bondMap[code]->setBond_db_info("Treasury",
+        bondPool->bondMap->value(code)->setBond_db_info("Treasury",
                                                  query.value(ind_tb_code).toString(),
                                                  query.value(ind_tb_name).toString(),
                                                  query.value(ind_interest_type).toString(),

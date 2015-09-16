@@ -7,7 +7,8 @@
 BondRealtimeInfo::BondRealtimeInfo(const QString &windCode) : BaseWindQuant() {
     this->bondCode = windCode;
     this->reqID = 0;
-    RWLock_realtime = new QReadWriteLock;
+    this->RWLock_realtime = new QReadWriteLock();
+    qDebug() <<Q_FUNC_INFO << bondCode;
 //    connect(this,SIGNAL(signal_realtimedata_refresh()),this,SLOT(slot_update_histdata()),Qt::DirectConnection);
 }
 

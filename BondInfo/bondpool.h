@@ -43,7 +43,7 @@ public:
     int windCodesNumber;
     QStringList windCodes;
 
-    QMap<QString, BaseBond*> bondMap;
+    QMap<QString, BaseBond*> *bondMap;
 
 //private:
     static BondPool g_instance;
