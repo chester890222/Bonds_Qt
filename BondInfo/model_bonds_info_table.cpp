@@ -1,4 +1,5 @@
 #include "model_bonds_info_table.h"
+#include <QDebug>
 
 Model_Bonds_Info_Table::Model_Bonds_Info_Table(QObject *parent) :
     QAbstractTableModel(parent)
@@ -7,6 +8,7 @@ Model_Bonds_Info_Table::Model_Bonds_Info_Table(QObject *parent) :
 }
 
 Model_Bonds_Info_Table::~Model_Bonds_Info_Table() {
+    qDebug() << Q_FUNC_INFO;
     delete CurData;
     CurData = NULL;
 }

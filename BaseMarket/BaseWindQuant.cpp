@@ -9,7 +9,7 @@ BaseWindQuant::BaseWindQuant()
 
 BaseWindQuant::~BaseWindQuant()
 {
-    AuthorizeQuit();
+//    AuthorizeQuit();
 }
 
 int WINAPI BaseWindQuant::CallbackMain(WQEvent* pEvent, LPVOID pParam)
