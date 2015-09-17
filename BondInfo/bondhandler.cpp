@@ -3,11 +3,11 @@
 
 #include <QDebug>
 
-BondHandler BondHandler::g_instance;
+BondHandler *BondHandler::g_instance;
 
 /////////////////////////////////////////////////////////////
 BondHandler *BondHandler::getInstance() {
-    return &g_instance;
+    return g_instance;
 }
 
 BondPool *BondHandler::getBondPoolInstance() {
@@ -62,16 +62,15 @@ void BondHandler::init() {
 
 //    QStringList codeList = getBondCodes();
     QStringList codeList;
-    codeList << "019511.SH" << "101308.SZ";
+    codeList << "150011.IB" << "150012.IB";
 
-    bondPool = BondPool::getInstance();
+    bondPool = new BondPool();
 
     bondPool->init(codeList);
 
     selectBondFromDb(codeList);
 
-    QString indicators("rt_last,rt_last_vol");
-//            rt_bid1,rt_ask1,rt_bsize1,rt_asize1");
+    QString indicators("rt_last,rt_last_vol,rt_bid1,rt_ask1,rt_bsize1,rt_asize1");
 
     bondPool->requestDataFromWind(indicators,true);
 }

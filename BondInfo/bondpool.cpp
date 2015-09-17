@@ -3,7 +3,7 @@
 #include "bondrealtimeinfo.h"
 #include <QDebug>
 
-BondPool BondPool::g_instance;
+BondPool *BondPool::g_instance;
 
 BondPool::BondPool(QObject *parent) :QObject(parent), BaseWindQuant() {
     isInit = false;
@@ -103,7 +103,7 @@ bool BondPool::cancelRequestFromWind() {
 
 
 BondPool *BondPool::getInstance() {
-    return &g_instance;
+    return g_instance;
 }
 
 const QStringList *BondPool::getWindCodes() {

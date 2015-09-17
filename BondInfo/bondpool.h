@@ -45,7 +45,7 @@ public:
     QMap<QString, BaseBond*> *bondMap;
 
 //private:
-    static BondPool g_instance;
+    static BondPool *g_instance;
 
 signals:
     void signal_RealtimeDataUpdate(QStringList);

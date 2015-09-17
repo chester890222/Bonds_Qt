@@ -37,7 +37,7 @@ protected:
     BondPool *bondPool;
 
 private:
-    static BondHandler g_instance;
+    static BondHandler *g_instance;
 
 
 signals:

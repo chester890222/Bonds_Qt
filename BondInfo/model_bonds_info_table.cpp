@@ -9,8 +9,8 @@ Model_Bonds_Info_Table::Model_Bonds_Info_Table(QObject *parent) :
 
 Model_Bonds_Info_Table::~Model_Bonds_Info_Table() {
     qDebug() << Q_FUNC_INFO;
-    delete CurData;
-    CurData = NULL;
+//    delete CurData;
+//    CurData = NULL;
 }
 
 
@@ -42,28 +42,14 @@ QVariant Model_Bonds_Info_Table::data(const QModelIndex &index, int role) const 
             return CurData->value(tmp_code)->name;
         else if ("Last" == currCol)
             return CurData->value(tmp_code)->realtimedata.rt_last;
-//        else if("OrderNumber" == currCol)
-//            return CurData->at(index.row()).orderNumber;
-//        else if("OrderDate" == currCol)
-//            temp = QString::number(CurData->at(index.row()).orderDate);
-//        else if("OrderTime" == currCol)
-//            temp = QString::number(CurData->at(index.row()).orderTime);
-//        else if("OrderStatus" == currCol)
-//            temp = QString::number(CurData->at(index.row()).orderStatus);
-//        else if("TradeSide" == currCol)
-//            temp = QString::number(CurData->at(index.row()).tradeSide);
-//        else if("OrderVolume" == currCol)
-//            temp = QString::number(CurData->at(index.row()).orderVolume);
-//        else if("OrderPrice" == currCol)
-//            temp = QString::number(CurData->at(index.row()).orderPrice);
-//        else if("TradedVolume" == currCol)
-//            temp = QString::number(CurData->at(index.row()).tradedVolume);
-//        else if("TradedPrice" == currCol)
-//            temp = QString::number(CurData->at(index.row()).tradedPrice);
-//        else if("CancelVolume" == currCol)
-//            temp = QString::number(CurData->at(index.row()).cancelVolume);
-//        else if("OrderFrozenFund"==currCol)
-//            temp = QString::number(CurData->at(index.row()).orderFrozenFund);
+        else if ("Ask 1" == currCol)
+            return CurData->value(tmp_code)->realtimedata.rt_ask[0];
+        else if ("Bid 1" == currCol)
+            return CurData->value(tmp_code)->realtimedata.rt_bid[0];
+        else if ("Ask 1 Size" == currCol)
+            return CurData->value(tmp_code)->realtimedata.rt_asize[0];
+        else if ("Bid 1 Size" == currCol)
+            return CurData->value(tmp_code)->realtimedata.rt_bsize[0];
     }
 
     return QVariant(temp);

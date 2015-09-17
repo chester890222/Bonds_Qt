@@ -10,11 +10,11 @@ BondInfo::BondInfo(QWidget *parent) :
 {
     qDebug() << Q_FUNC_INFO;
     ui->setupUi(this);
-    bondhandler = BondHandler::getInstance();
+    bondhandler = new BondHandler();
     bondhandler->init();
 
     model_bonds_info_table = new Model_Bonds_Info_Table();
-    model_bonds_info_table->setCurCol(QStringList()<<"WindCode"<<"Bond Name" << "Last");
+    model_bonds_info_table->setCurCol(QStringList()<<"WindCode"<<"Bond Name" << "Last" << "Bid 1 Size" << "Bid 1" << "Ask 1" << "Ask 1 Size");
     model_bonds_info_table->setCurData(bondhandler->getBondPoolInstance()->getBondMap());
     ui->tableView_Bonds_Info->setModel(model_bonds_info_table);
     connect(bondhandler->getBondPoolInstance(),SIGNAL(signal_RealtimeDataUpdate(QStringList)), model_bonds_info_table, SLOT(slot_refreshData()));
