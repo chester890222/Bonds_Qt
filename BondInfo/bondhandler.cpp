@@ -20,6 +20,7 @@ BondHandler::BondHandler(QObject *parent) : QObject(parent) {
     bondPool = NULL;
     bond_db = NULL;
     isInit = FALSE;
+    g_instance = this;
 }
 
 BondHandler::~BondHandler() {
@@ -35,6 +36,7 @@ int BondHandler::clear() {
         bond_db = NULL;
     }
     if (bondPool != NULL) {
+//        bondPool->clear();
         delete bondPool;
         bondPool = NULL;
     }
@@ -63,6 +65,7 @@ void BondHandler::init() {
     codeList << "019511.SH" << "101308.SZ";
 
     bondPool = BondPool::getInstance();
+
     bondPool->init(codeList);
 
     selectBondFromDb(codeList);

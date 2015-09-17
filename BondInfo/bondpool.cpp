@@ -10,6 +10,7 @@ BondPool::BondPool(QObject *parent) :QObject(parent), BaseWindQuant() {
     isReq = false;
     reqID = 0;
     windCodesNumber = 0;
+    g_instance = this;
 }
 
 BondPool::~BondPool() {
@@ -51,7 +52,6 @@ int BondPool::clear() {
         bondMap->clear();
         delete bondMap;
         bondMap = NULL;
-        qDebug() << "fine up here2";
         isInit = false;
     }
 
