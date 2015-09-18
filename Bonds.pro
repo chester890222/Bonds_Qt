@@ -5,7 +5,8 @@ SUBDIRS += \
     BaseSQL \
     BaseBond \
     BondInfo \
-    BondMain
+    BondMain \
+    GBFcalculator
 
 
 CONFIG += ordered

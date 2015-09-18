@@ -69,12 +69,9 @@ public:
     double cal_timeToMaturity();
     double cal_currentCoupon();
 
-    void cal_YTMs();
+    void cal_YTM(double price, QDate curDate);
 
 protected:
-
-//    Bond_db_info bond_db_info;
-//    BondRealtimeInfo bondRealtimeInfo;
 
     double rt_vwap_YTM;
     double rt_high_YTM;

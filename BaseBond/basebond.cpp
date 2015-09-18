@@ -91,6 +91,6 @@ double BaseBond::cal_timeToMaturity() {
 }
 
 
-void BaseBond::cal_YTMs() {
+void BaseBond::cal_YTM(double price, QDate CurDate) {
 
 }
