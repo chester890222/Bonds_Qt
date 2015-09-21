@@ -65,12 +65,12 @@ public:
                          QDate offlistDate,QDate maturityDate,
                          double issueAmount);
 
-    double cal_accInterest();
-    double cal_timeToMaturity();
-    double cal_currentCoupon();
+    double cal_accInterest(QDate curDate);
+    double cal_timeToMaturity(QDate curDate);
+    double cal_currentCoupon(QDate curDate);
 
-    void cal_YTM(double price, QDate curDate);
-
+    double cal_YTM(double price, QDate curDate);
+    double cal_Price(double rate, QDate curDate);
 protected:
 
     double rt_vwap_YTM;

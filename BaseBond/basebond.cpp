@@ -43,11 +43,14 @@ void BaseBond::setBond_db_info(QString BType, QString Code, QString Name,
     this->offlistDate = OfflistDate;
     this->maturityDate = MaturityDate;
     this->issueAmount = IssueAmount;
-/*######################### coupons算法！！
+/*coupon dates算法
 起息日=carrydate
-下一次付息日由payment frequency决定，1年n次付息（n都是整数？目前只见到每年1、2次付息）。
-next date = carrydate + month/n个月，节假日顺延
-input coupons = QString, “2,1.123,123.12”，“1.1”
+the next payment date is determined by payment frequency
+paymentfrequency = n times anually（n都是整数？目前只见到每年1、2次付息）。
+next date = last_pay_date + 12 month/n，节假日顺延
+(holidays are not considered here, only for weekends)
+Input coupons = QString, like “2,1.123,123.12”，“1.1”
+coupons are the payments on the date, not anualized!!!
 */
     QStringList couponsTemp;
     int i=0;
@@ -78,19 +81,50 @@ input coupons = QString, “2,1.123,123.12”，“1.1”
 
 }
 
-double BaseBond::cal_accInterest() {
-    return 0.0;
+double BaseBond::cal_currentCoupon(QDate curDate = QDate::currentDate()) {
+    QList<QDate> pay_dates = coupons.keys();
+    int i=0;
+    while (curDate < pay_dates[i]) {
+        i++;
+    }
+    if (i == 0) {
+        qDebug() << "i=0, " << bondCode << " current coupon = " << coupons.value(pay_dates[i]);
+        return coupons.value(pay_dates[i]);
+    } else {
+        qDebug() << coupons.value(pay_dates[i-1]);
+        return coupons.value(pay_dates[i-1]);
+    }
 }
 
-double BaseBond::cal_currentCoupon() {
-    return 0.0;
+double BaseBond::cal_accInterest(QDate curDate = QDate::currentDate()) {
+    double coupon = cal_currentCoupon(curDate), accI;
+    QDate last_pay;
+    QList<QDate> pay_dates = coupons.keys();
+    int i=0, accDays,totalDays;
+    while (curDate < pay_dates[i]) {
+        i++;
+    }
+    if (i == 0) {
+        last_pay = carryDate;
+    } else {
+        last_pay = pay_dates[i-1];
+    }
+    accDays = last_pay.daysTo(curDate);
+    totalDays = last_pay.daysTo(pay_dates[i]);
+    accI = coupon * (double)accDays/(double)totalDays;
+    return accI;
 }
 
-double BaseBond::cal_timeToMaturity() {
-    return 0.0;
+double BaseBond::cal_timeToMaturity(QDate curDate = QDate::currentDate()) {
+    int days = curDate.daysTo(maturityDate);
+    return (double)days/365;
 }
 
 
-void BaseBond::cal_YTM(double price, QDate CurDate) {
+double BaseBond::cal_YTM(double price, QDate curDate = QDate::currentDate()) {
+
+}
+
+double BaseBond::cal_Price(double rate, QDate curDate = QDate::currentDate()) {
 
 }
