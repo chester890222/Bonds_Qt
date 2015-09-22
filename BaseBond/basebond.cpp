@@ -59,58 +59,72 @@ coupons are the payments on the date, not anualized!!!
     } else {
         couponsTemp = QStringList(Coupons);
     }
-    double tmp = 12/PaymentFrequency;
-    if (tmp == (int)tmp) {
-        QDate next = carryDate, next_temp;
-        while (next <= maturityDate) {
-            next = next.addMonths(12/PaymentFrequency);
-            if (next.dayOfWeek() > 5) {
-                next_temp = next.addDays(8-next.dayOfWeek());
-            } else {
-                next_temp = next;
-            }
-            if (couponsTemp.size() > 1) {
-                coupons[next_temp] =couponsTemp.at(i).toDouble();
-            } else {
-                coupons[next_temp] = couponsTemp.at(0).toDouble();
-            }
-            i++;
+    if (abs(PaymentFrequency-0.0) <1e-6) {
+        coupons[maturityDate] = 0.0;
+
+    } else {
+        double tmp = 12/PaymentFrequency;
+        if (tmp == (int)tmp) {
+            QDate next = carryDate, next_temp;
+            while (next <= maturityDate) {
+                next = next.addMonths((int)tmp);
+                if (next.dayOfWeek() > 5) {
+                    next_temp = next.addDays(8-next.dayOfWeek());
+                } else {
+                    next_temp = next;
+                }
+                if (couponsTemp.size() > 1) {
+                    coupons[next_temp] =couponsTemp.at(i).toDouble()/tmp;
+                } else {
+                    coupons[next_temp] = couponsTemp.at(0).toDouble()/tmp;
+                }
+                i++;
 //            qDebug() << code << next_temp << coupons[next_temp];
+            }
+        } else {
+            qDebug() << "12/paymentfrequncy is not integer! double check!!" << bondCode;
         }
     }
+}
+
+int BaseBond::cal_last_coupon_index(QDate curDate = QDate::currentDate()) {
+    // return -1 : no coupon paid yet
+    QList<QDate> pay_dates = coupons.keys();
+    int days=-100000000,tmp_days, index=-1;
+    for (int i=0; i < pay_dates.size(); i++) {
+        tmp_days = curDate.daysTo(pay_dates[i]);
+        if (tmp_days > days && tmp_days < 0) {
+            days = tmp_days;
+            index = i;
+        }
+    }
+    return index;
 
 }
 
 double BaseBond::cal_currentCoupon(QDate curDate = QDate::currentDate()) {
     QList<QDate> pay_dates = coupons.keys();
-    int i=0;
-    while (curDate < pay_dates[i]) {
-        i++;
-    }
-    if (i == 0) {
-        qDebug() << "i=0, " << bondCode << " current coupon = " << coupons.value(pay_dates[i]);
-        return coupons.value(pay_dates[i]);
-    } else {
-        qDebug() << coupons.value(pay_dates[i-1]);
-        return coupons.value(pay_dates[i-1]);
-    }
+    int index = cal_last_coupon_index(curDate) + 1;
+    if (index > pay_dates.size()) qDebug() << Q_FUNC_INFO << "something wrong";
+    qDebug() <<"current coupon = " << coupons.value(pay_dates[index]);
+    return coupons.value(pay_dates[index]);
 }
+
+
 
 double BaseBond::cal_accInterest(QDate curDate = QDate::currentDate()) {
     double coupon = cal_currentCoupon(curDate), accI;
-    QDate last_pay;
+    int last_pay_ind = cal_last_coupon_index(curDate);
+    int accDays, totalDays;
     QList<QDate> pay_dates = coupons.keys();
-    int i=0, accDays,totalDays;
-    while (curDate < pay_dates[i]) {
-        i++;
-    }
-    if (i == 0) {
+    QDate last_pay;
+    if (last_pay_ind == -1)
         last_pay = carryDate;
-    } else {
-        last_pay = pay_dates[i-1];
-    }
+    else
+        last_pay = pay_dates[last_pay_ind];
+
     accDays = last_pay.daysTo(curDate);
-    totalDays = last_pay.daysTo(pay_dates[i]);
+    totalDays = last_pay.daysTo(pay_dates[last_pay_ind+1]);
     accI = coupon * (double)accDays/(double)totalDays;
     return accI;
 }
@@ -126,5 +140,15 @@ double BaseBond::cal_YTM(double price, QDate curDate = QDate::currentDate()) {
 }
 
 double BaseBond::cal_Price(double rate, QDate curDate = QDate::currentDate()) {
+    QList<QDate> pay_dates = coupons.keys();
+    int last_ind = cal_last_coupon_index(curDate);
+    double accI = cal_accInterest(curDate);
+    int tmp_days;
+    double sum=0.0, cashflow, time, discount;
+    //calculate discounted future values on next payment day
+//    if (pay_dates.size() > last_ind+1)
+//    for (int i = last_ind+1; i<=pay_dates.size();i++) {
+//        time = pay_dates[last_ind+1].daysTo(pay_dates[i]);
+//    }
 
 }

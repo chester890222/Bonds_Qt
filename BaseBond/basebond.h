@@ -68,6 +68,7 @@ public:
     double cal_accInterest(QDate curDate);
     double cal_timeToMaturity(QDate curDate);
     double cal_currentCoupon(QDate curDate);
+    int cal_last_coupon_index(QDate curDate);
 
     double cal_YTM(double price, QDate curDate);
     double cal_Price(double rate, QDate curDate);
