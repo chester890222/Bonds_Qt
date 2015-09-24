@@ -141,14 +141,23 @@ double BaseBond::cal_YTM(double price, QDate curDate = QDate::currentDate()) {
 
 double BaseBond::cal_Price(double rate, QDate curDate = QDate::currentDate()) {
     QList<QDate> pay_dates = coupons.keys();
+    QList<double> coupon_values = coupons.values();
     int last_ind = cal_last_coupon_index(curDate);
     double accI = cal_accInterest(curDate);
     int tmp_days;
     double sum=0.0, cashflow, time, discount;
-    //calculate discounted future values on next payment day
-//    if (pay_dates.size() > last_ind+1)
-//    for (int i = last_ind+1; i<=pay_dates.size();i++) {
-//        time = pay_dates[last_ind+1].daysTo(pay_dates[i]);
-//    }
+
+    //future cash flows:
+
+    //remaining payment times
+    int times = pay_dates.size()-1-last_ind;
+    if (times == 0) {
+        //Price at maturity date = facevalue + last coupon
+        return faceValue+coupons.value(maturityDate);
+    } else {
+        for (int i = 1; i<=times; i++) {
+        time = pay_dates[last_ind+1].daysTo(pay_dates[i]);
+        }
+    }
 
 }
