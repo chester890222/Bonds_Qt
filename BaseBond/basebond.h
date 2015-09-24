@@ -69,9 +69,12 @@ public:
     double cal_timeToMaturity(QDate curDate);
     double cal_currentCoupon(QDate curDate);
     int cal_last_coupon_index(QDate curDate);
+    QDate cal_next_payment_date(QDate curDate);
 
-    double cal_YTM(double price, QDate curDate);
-    double cal_Price(double rate, QDate curDate);
+    double cal_YTM(double price, QDate curDate, QString Method);
+    double cal_Clean_Price(double rate, QDate curDate, QString Method);
+    double cal_Dirty_Price(double rate, QDate curDate, QString Method);
+    double cal_discounted_cash_flow(double cf, double rate, double time, QString Method, double frequency);
 protected:
 
     double rt_vwap_YTM;

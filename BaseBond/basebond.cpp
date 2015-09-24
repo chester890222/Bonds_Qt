@@ -134,30 +134,73 @@ double BaseBond::cal_timeToMaturity(QDate curDate = QDate::currentDate()) {
     return (double)days/365;
 }
 
-
-double BaseBond::cal_YTM(double price, QDate curDate = QDate::currentDate()) {
-
+double BaseBond::cal_discounted_cash_flow(double cf, double rate, double time, QString Method = "Simple", double frequency = 1.0) {
+    if (Method == "Simple") {
+        return cf/(1+rate*time);
+    } else if (Method == "Compounded") {
+        return cf/pow((1+rate/frequency),frequency*time);
+    } else if (Method == "Continuous") {
+        return cf*exp(-rate * time);
+    } else {
+        return 0.0;
+    }
 }
 
-double BaseBond::cal_Price(double rate, QDate curDate = QDate::currentDate()) {
-    QList<QDate> pay_dates = coupons.keys();
-    QList<double> coupon_values = coupons.values();
-    int last_ind = cal_last_coupon_index(curDate);
-    double accI = cal_accInterest(curDate);
-    int tmp_days;
-    double sum=0.0, cashflow, time, discount;
+QDate BaseBond::cal_next_payment_date(QDate curDate) {
+    if (curDate.daysTo(maturityDate) <= 0) {
+        return maturityDate;
+    } else {
+        QList<QDate> sorted_dates = coupons.keys();
+        int last_ind = cal_last_coupon_index(curDate);
+        return sorted_dates[last_ind+1];
+    }
+}
 
-    //future cash flows:
+
+double BaseBond::cal_YTM(double price, QDate curDate = QDate::currentDate(), QString Method = "Simple") {
+    double tol = 1e-6;
+    double low = -1.0, high = 1.0;
+    double dis = 0;
+    double p = cal_Clean_Price(dis,curDate,Method);
+    while (abs(p-price)>tol) {
+        if (p>price) {
+            low = dis;
+        }
+        if (p<price) {
+            high = dis;
+        }
+        dis = (high+low)/2;
+        p = cal_Clean_Price(dis,curDate,Method);
+    }
+
+    return dis;
+}
+
+double BaseBond::cal_Clean_Price(double rate, QDate curDate = QDate::currentDate(), QString Method = "Simple") {
+    QList<QDate> pay_dates = coupons.keys();
+    int last_ind = cal_last_coupon_index(curDate);
+    double sum=0.0, time;
 
     //remaining payment times
     int times = pay_dates.size()-1-last_ind;
+    //future cash flows:
     if (times == 0) {
-        //Price at maturity date = facevalue + last coupon
-        return faceValue+coupons.value(maturityDate);
+        //Only one payment at maturity
+        double p = faceValue+coupons.value(maturityDate);
+        double tau = curDate.daysTo(maturityDate)/365.0;
+        sum = cal_discounted_cash_flow(p,rate,tau,Method, 1.0);
     } else {
         for (int i = 1; i<=times; i++) {
-        time = pay_dates[last_ind+1].daysTo(pay_dates[i]);
+        time = curDate.daysTo(pay_dates[last_ind+i])/365.0;
+        sum += cal_discounted_cash_flow(coupons.value(pay_dates[last_ind+i]), rate, time, Method, 1.0);
         }
+        sum += cal_discounted_cash_flow(faceValue, rate, cal_timeToMaturity(curDate), Method, 1.0);
     }
+    return sum;
+}
 
+double BaseBond::cal_Dirty_Price(double rate, QDate curDate, QString Method) {
+    double clean = cal_Clean_Price(rate, curDate, Method);
+    double accI = cal_accInterest(curDate);
+    return accI+clean;
 }
