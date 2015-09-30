@@ -10,14 +10,24 @@ class BaseGBF : public QObject, BondRealtimeInfo
 {
     Q_OBJECT
 public:
-    explicit BaseGBF(QObject *parent = 0);
+    BaseGBF(const QString &code);
+
+    QDate getDate(QString type);
+    void setDate(QString type, QDate date);
+    QMap<QString, double> getConvFactors();
+    QMap<QString, BaseBond*>* getDeliBonds();
 
 
+protected:
     //treasury bond info
-    //合约上市日，最后交易日，滚动交割起始日，集中交券日，配对缴款日，最后交割日
-    QDate listDate;
-    QDate offListDate;
-
+    QDate listDate; //上市日
+    QDate offListDate; //最后交易日
+    QDate firstDeliveryDate; // 滚动交割起始日
+    QDate lastDeliveryDate; //最后交券日
+    QDate lastMatchDate; //配对缴款日
+    QDate lastReceiveDate; //最后收券日
+    QMap<QString, double> conversion_factors;
+    QMap<QString, BaseBond*> deliverable_bonds;
 
 
 
