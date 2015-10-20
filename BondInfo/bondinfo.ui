@@ -18,10 +18,21 @@
     <rect>
      <x>20</x>
      <y>50</y>
-     <width>721</width>
+     <width>461</width>
      <height>571</height>
     </rect>
    </property>
+  </widget>
+  <widget class="QDockWidget" name="dockWidget_single_info">
+   <property name="geometry">
+    <rect>
+     <x>520</x>
+     <y>50</y>
+     <width>451</width>
+     <height>221</height>
+    </rect>
+   </property>
+   <widget class="QWidget" name="dockWidgetContents"/>
   </widget>
  </widget>
  <layoutdefault spacing="6" margin="11"/>

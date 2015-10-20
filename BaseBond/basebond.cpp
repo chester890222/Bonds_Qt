@@ -10,39 +10,40 @@ BaseBond::~BaseBond() {
     qDebug() << Q_FUNC_INFO << bondCode;
 }
 
-void BaseBond::setBond_db_info(QString BType, QString Code, QString Name,
-                     QString IType, double FaceValue,
-                     QString Coupons, double PaymentFrequency,
-                     QDate CarryDate, QDate ListDate,
-                     QDate OfflistDate,QDate MaturityDate,
-                     double IssueAmount) {
-    if (BType == "Treasury") {
+void BaseBond::setBond_db_info(QString bType_, QString code_, QString name_,
+                               QString iType_, double faceValue_,
+                               QString coupons_, double paymentFrequency_,
+                               double term_, QDate carryDate_, QDate listDate_,
+                               QDate offlistDate_, QDate maturityDate_,
+                               double issueAmount_) {
+    if (bType_ == "Treasury") {
         this->bType = Treasury;
-    } else if (BType == "LocalGov") {
+    } else if (bType_ == "LocalGov") {
         this->bType = LocalGov;
-    } else if (BType == "Financial") {
+    } else if (bType_ == "Financial") {
         this->bType = Financial;
-    } else if (BType == "Corporate") {
+    } else if (bType_ == "Corporate") {
         this->bType = Corporate;
-    } else if (BType == "Enterprise") {
+    } else if (bType_ == "Enterprise") {
         this->bType = Enterprise;
-    } else if (BType == "Convertible") {
+    } else if (bType_ == "Convertible") {
         this->bType = Convertible;
-    } else if (BType == "Exchangeble") {
+    } else if (bType_ == "Exchangeble") {
         this->bType = Exchangable;
     }
-    this->code = Code;
-    this->name = Name;
-    if (IType == tr("fixed")) this->iType = fixed_interest;
-    else if (IType == tr("floating")) this->iType = floating_interest;
-    this->faceValue = FaceValue;
+    this->code = code_;
+    this->name = name_;
+    if (iType_ == tr("fixed")) this->iType = fixed_interest;
+    else if (iType_ == tr("floating")) this->iType = floating_interest;
+    this->faceValue = faceValue_;
 
-    this->paymentFrequency = PaymentFrequency;
-    this->carryDate = CarryDate;
-    this->listDate = ListDate;
-    this->offlistDate = OfflistDate;
-    this->maturityDate = MaturityDate;
-    this->issueAmount = IssueAmount;
+    this->paymentFrequency = paymentFrequency_;
+    this->term = term_;
+    this->carryDate = carryDate_;
+    this->listDate = listDate_;
+    this->offlistDate = offlistDate_;
+    this->maturityDate = maturityDate_;
+    this->issueAmount = issueAmount_;
 /*coupon dates算法
 起息日=carrydate
 the next payment date is determined by payment frequency
@@ -54,16 +55,16 @@ coupons are the payments on the date, not anualized!!!
 */
     QStringList couponsTemp;
     int i=0;
-    if (Coupons.contains(",")) {
-        couponsTemp = Coupons.split(",");
+    if (coupons_.contains(",")) {
+        couponsTemp = coupons_.split(",");
     } else {
-        couponsTemp = QStringList(Coupons);
+        couponsTemp = QStringList(coupons_);
     }
-    if (abs(PaymentFrequency-0.0) <1e-6) {
+    if (abs(paymentFrequency_-0.0) <1e-6) {
         coupons[maturityDate] = 0.0;
 
     } else {
-        double tmp = 12/PaymentFrequency;
+        double tmp = 12/paymentFrequency_;
         if (tmp == (int)tmp) {
             QDate next = carryDate, next_temp;
             while (next <= maturityDate) {
@@ -87,7 +88,7 @@ coupons are the payments on the date, not anualized!!!
     }
 }
 
-int BaseBond::cal_last_coupon_index(QDate curDate = QDate::currentDate()) {
+int BaseBond::cal_last_coupon_index(QDate curDate = QDate::currentDate()) const {
     // return -1 : no coupon paid yet
     QList<QDate> pay_dates = coupons.keys();
     int days=-100000000,tmp_days, index=-1;
@@ -102,7 +103,7 @@ int BaseBond::cal_last_coupon_index(QDate curDate = QDate::currentDate()) {
 
 }
 
-double BaseBond::cal_currentCoupon(QDate curDate = QDate::currentDate()) {
+double BaseBond::cal_currentCoupon(QDate curDate = QDate::currentDate()) const {
     QList<QDate> pay_dates = coupons.keys();
     int index = cal_last_coupon_index(curDate) + 1;
     if (index > pay_dates.size()) qDebug() << Q_FUNC_INFO << "something wrong";
@@ -112,7 +113,7 @@ double BaseBond::cal_currentCoupon(QDate curDate = QDate::currentDate()) {
 
 
 
-double BaseBond::cal_accInterest(QDate curDate = QDate::currentDate()) {
+double BaseBond::cal_accInterest(QDate curDate = QDate::currentDate()) const {
     double coupon = cal_currentCoupon(curDate), accI;
     int last_pay_ind = cal_last_coupon_index(curDate);
     int accDays, totalDays;
@@ -129,12 +130,12 @@ double BaseBond::cal_accInterest(QDate curDate = QDate::currentDate()) {
     return accI;
 }
 
-double BaseBond::cal_timeToMaturity(QDate curDate = QDate::currentDate()) {
+double BaseBond::cal_timeToMaturity(QDate curDate = QDate::currentDate()) const{
     int days = curDate.daysTo(maturityDate);
     return (double)days/365;
 }
 
-double BaseBond::cal_discounted_cash_flow(double cf, double rate, double time, QString Method = "Simple", double frequency = 1.0) {
+double BaseBond::cal_discounted_cash_flow(double cf, double rate, double time, QString Method = "Simple", double frequency = 1.0) const {
     if (Method == "Simple") {
         return cf/(1+rate*time);
     } else if (Method == "Compounded") {
@@ -146,7 +147,7 @@ double BaseBond::cal_discounted_cash_flow(double cf, double rate, double time, Q
     }
 }
 
-QDate BaseBond::cal_next_payment_date(QDate curDate) {
+QDate BaseBond::cal_next_payment_date(QDate curDate) const {
     if (curDate.daysTo(maturityDate) <= 0) {
         return maturityDate;
     } else {
@@ -157,7 +158,7 @@ QDate BaseBond::cal_next_payment_date(QDate curDate) {
 }
 
 
-double BaseBond::cal_YTM(double price, QDate curDate = QDate::currentDate(), QString Method = "Simple") {
+double BaseBond::cal_YTM(double price, QDate curDate = QDate::currentDate(), QString Method = "Simple") const {
     double tol = 1e-6;
     double low = -1.0, high = 1.0;
     double dis = 0;
@@ -176,7 +177,7 @@ double BaseBond::cal_YTM(double price, QDate curDate = QDate::currentDate(), QSt
     return dis;
 }
 
-double BaseBond::cal_Clean_Price(double rate, QDate curDate = QDate::currentDate(), QString Method = "Simple") {
+double BaseBond::cal_Clean_Price(double rate, QDate curDate = QDate::currentDate(), QString Method = "Simple") const{
     QList<QDate> pay_dates = coupons.keys();
     int last_ind = cal_last_coupon_index(curDate);
     double sum=0.0, time;
@@ -199,7 +200,7 @@ double BaseBond::cal_Clean_Price(double rate, QDate curDate = QDate::currentDate
     return sum;
 }
 
-double BaseBond::cal_Dirty_Price(double rate, QDate curDate, QString Method) {
+double BaseBond::cal_Dirty_Price(double rate, QDate curDate, QString Method) const {
     double clean = cal_Clean_Price(rate, curDate, Method);
     double accI = cal_accInterest(curDate);
     return accI+clean;

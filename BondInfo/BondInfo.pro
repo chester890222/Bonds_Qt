@@ -21,11 +21,14 @@ SOURCES += main.cpp\
         bondinfo.cpp \
     bondhandler.cpp \
     bondpool.cpp \
-    model_bonds_info_table.cpp
+    model_bonds_info_table.cpp \
+    widget_single_info.cpp
 
 HEADERS  += bondinfo.h \
     bondhandler.h \
     bondpool.h \
-    model_bonds_info_table.h
+    model_bonds_info_table.h \
+    widget_single_info.h
 
-FORMS    += bondinfo.ui
+FORMS    += bondinfo.ui \
+    widget_single_info.ui

@@ -22,7 +22,7 @@ protected:
     //treasury bond info
     QDate listDate; //上市日
     QDate offListDate; //最后交易日
-    QDate firstDeliveryDate; // 滚动交割起始日
+    QDate firstDeliveryDate; //滚动交割起始日
     QDate lastDeliveryDate; //最后交券日
     QDate lastMatchDate; //配对缴款日
     QDate lastReceiveDate; //最后收券日
