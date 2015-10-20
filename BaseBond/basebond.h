@@ -42,6 +42,7 @@ public:
     double faceValue;
     QMap<QDate, double> coupons;
     double paymentFrequency;
+    double term;
     QDate carryDate;
     QDate listDate;
     QDate offlistDate;
@@ -58,23 +59,23 @@ public:
     BaseBond(const QString &code);
     ~BaseBond();
 
-    void setBond_db_info(QString bType, QString code, QString name,
-                         QString iType, double faceValue,
-                         QString coupons, double paymentFrequency,
-                         QDate carryDate, QDate listDate,
-                         QDate offlistDate,QDate maturityDate,
-                         double issueAmount);
+    void setBond_db_info(QString bType_, QString code_, QString name_,
+                         QString iType_, double faceValue_,
+                         QString coupons_, double paymentFrequency_,
+                         double term_, QDate carryDate_, QDate listDate_,
+                         QDate offlistDate_, QDate maturityDate_,
+                         double issueAmount_);
 
-    double cal_accInterest(QDate curDate);
-    double cal_timeToMaturity(QDate curDate);
-    double cal_currentCoupon(QDate curDate);
-    int cal_last_coupon_index(QDate curDate);
-    QDate cal_next_payment_date(QDate curDate);
+    double cal_accInterest(QDate curDate) const;
+    double cal_timeToMaturity(QDate curDate) const;
+    double cal_currentCoupon(QDate curDate) const;
+    int cal_last_coupon_index(QDate curDate) const;
+    QDate cal_next_payment_date(QDate curDate) const;
 
-    double cal_YTM(double price, QDate curDate, QString Method);
-    double cal_Clean_Price(double rate, QDate curDate, QString Method);
-    double cal_Dirty_Price(double rate, QDate curDate, QString Method);
-    double cal_discounted_cash_flow(double cf, double rate, double time, QString Method, double frequency);
+    double cal_YTM(double price, QDate curDate, QString Method) const;
+    double cal_Clean_Price(double rate, QDate curDate, QString Method) const;
+    double cal_Dirty_Price(double rate, QDate curDate, QString Method) const;
+    double cal_discounted_cash_flow(double cf, double rate, double time, QString Method, double frequency) const;
 protected:
 
     double rt_vwap_YTM;

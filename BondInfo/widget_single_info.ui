@@ -1,0 +1,249 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ui version="4.0">
+ <class>Widget_Single_Info</class>
+ <widget class="QWidget" name="Widget_Single_Info">
+  <property name="geometry">
+   <rect>
+    <x>0</x>
+    <y>0</y>
+    <width>439</width>
+    <height>172</height>
+   </rect>
+  </property>
+  <property name="windowTitle">
+   <string>Form</string>
+  </property>
+  <widget class="QLineEdit" name="lineEdit_name">
+   <property name="geometry">
+    <rect>
+     <x>275</x>
+     <y>11</y>
+     <width>133</width>
+     <height>20</height>
+    </rect>
+   </property>
+  </widget>
+  <widget class="QLabel" name="label_name">
+   <property name="geometry">
+    <rect>
+     <x>209</x>
+     <y>11</y>
+     <width>48</width>
+     <height>16</height>
+    </rect>
+   </property>
+   <property name="text">
+    <string>现券简称</string>
+   </property>
+  </widget>
+  <widget class="QLabel" name="label_term">
+   <property name="geometry">
+    <rect>
+     <x>16</x>
+     <y>37</y>
+     <width>48</width>
+     <height>16</height>
+    </rect>
+   </property>
+   <property name="text">
+    <string>发行期限</string>
+   </property>
+  </widget>
+  <widget class="QLineEdit" name="lineEdit_term">
+   <property name="geometry">
+    <rect>
+     <x>70</x>
+     <y>37</y>
+     <width>133</width>
+     <height>20</height>
+    </rect>
+   </property>
+  </widget>
+  <widget class="QLabel" name="label_issueAmount">
+   <property name="geometry">
+    <rect>
+     <x>16</x>
+     <y>63</y>
+     <width>48</width>
+     <height>16</height>
+    </rect>
+   </property>
+   <property name="text">
+    <string>发行规模</string>
+   </property>
+  </widget>
+  <widget class="QLineEdit" name="lineEdit_issueAmount">
+   <property name="geometry">
+    <rect>
+     <x>70</x>
+     <y>63</y>
+     <width>133</width>
+     <height>20</height>
+    </rect>
+   </property>
+  </widget>
+  <widget class="QLabel" name="label_carryDate">
+   <property name="geometry">
+    <rect>
+     <x>16</x>
+     <y>89</y>
+     <width>36</width>
+     <height>16</height>
+    </rect>
+   </property>
+   <property name="text">
+    <string>起息日</string>
+   </property>
+  </widget>
+  <widget class="QLineEdit" name="lineEdit_carryDate">
+   <property name="geometry">
+    <rect>
+     <x>70</x>
+     <y>89</y>
+     <width>133</width>
+     <height>20</height>
+    </rect>
+   </property>
+  </widget>
+  <widget class="QLabel" name="label_accInterest">
+   <property name="geometry">
+    <rect>
+     <x>16</x>
+     <y>115</y>
+     <width>48</width>
+     <height>16</height>
+    </rect>
+   </property>
+   <property name="text">
+    <string>应计利息</string>
+   </property>
+  </widget>
+  <widget class="QLineEdit" name="lineEdit_accInterest">
+   <property name="geometry">
+    <rect>
+     <x>70</x>
+     <y>115</y>
+     <width>133</width>
+     <height>20</height>
+    </rect>
+   </property>
+  </widget>
+  <widget class="QLineEdit" name="lineEdit_code">
+   <property name="geometry">
+    <rect>
+     <x>70</x>
+     <y>11</y>
+     <width>133</width>
+     <height>20</height>
+    </rect>
+   </property>
+  </widget>
+  <widget class="QLabel" name="label_code">
+   <property name="geometry">
+    <rect>
+     <x>16</x>
+     <y>11</y>
+     <width>48</width>
+     <height>16</height>
+    </rect>
+   </property>
+   <property name="text">
+    <string>现券代码</string>
+   </property>
+  </widget>
+  <widget class="QLineEdit" name="lineEdit_ttm">
+   <property name="geometry">
+    <rect>
+     <x>275</x>
+     <y>37</y>
+     <width>133</width>
+     <height>20</height>
+    </rect>
+   </property>
+  </widget>
+  <widget class="QLabel" name="label_ttm">
+   <property name="geometry">
+    <rect>
+     <x>209</x>
+     <y>37</y>
+     <width>48</width>
+     <height>16</height>
+    </rect>
+   </property>
+   <property name="text">
+    <string>剩余期限</string>
+   </property>
+  </widget>
+  <widget class="QLineEdit" name="lineEdit_maturityDate">
+   <property name="geometry">
+    <rect>
+     <x>275</x>
+     <y>63</y>
+     <width>133</width>
+     <height>20</height>
+    </rect>
+   </property>
+  </widget>
+  <widget class="QLabel" name="label_maturityDate">
+   <property name="geometry">
+    <rect>
+     <x>209</x>
+     <y>63</y>
+     <width>36</width>
+     <height>16</height>
+    </rect>
+   </property>
+   <property name="text">
+    <string>到期日</string>
+   </property>
+  </widget>
+  <widget class="QLineEdit" name="lineEdit_paymentFrequency">
+   <property name="geometry">
+    <rect>
+     <x>275</x>
+     <y>89</y>
+     <width>133</width>
+     <height>20</height>
+    </rect>
+   </property>
+  </widget>
+  <widget class="QLabel" name="label_paymentFrequency">
+   <property name="geometry">
+    <rect>
+     <x>209</x>
+     <y>89</y>
+     <width>60</width>
+     <height>16</height>
+    </rect>
+   </property>
+   <property name="text">
+    <string>年付息次数</string>
+   </property>
+  </widget>
+  <widget class="QLineEdit" name="lineEdit_nextCouponDate">
+   <property name="geometry">
+    <rect>
+     <x>275</x>
+     <y>115</y>
+     <width>133</width>
+     <height>20</height>
+    </rect>
+   </property>
+  </widget>
+  <widget class="QLabel" name="label_nextCouponDate">
+   <property name="geometry">
+    <rect>
+     <x>209</x>
+     <y>115</y>
+     <width>60</width>
+     <height>16</height>
+    </rect>
+   </property>
+   <property name="text">
+    <string>下一付息日</string>
+   </property>
+  </widget>
+ </widget>
+ <resources/>
+ <connections/>
+</ui>

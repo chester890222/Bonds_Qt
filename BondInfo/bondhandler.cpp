@@ -78,7 +78,7 @@ void BondHandler::init() {
 QStringList BondHandler::getBondCodes() {
     qDebug() << Q_FUNC_INFO;
     QStringList codeslist;
-    QString qry = QString("select tb_code from treasury_bond_info where record_date = '%1'").arg(QDate::currentDate().toString("yyyy-MM-dd"));
+    QString qry = QString("select code from treasury_bond_info where record_date = '%1'").arg(QDate::currentDate().toString("yyyy-MM-dd"));
     QSqlQuery codes_qry(qry, *bond_db->getMyDB());
     int codesNumber = codes_qry.size();
     if (codesNumber == 0) {
@@ -95,16 +95,17 @@ QStringList BondHandler::getBondCodes() {
 void BondHandler::selectBondFromDb() {
     qDebug() << Q_FUNC_INFO;
 
-    QString qry = QString("select tb_code, tb_name, face_value, interest_type, coupons, payment_frequency, issue_amount, carry_date, maturity_date, list_date, off_list_date, record_date from treasury_bond_info where record_date = '%1'").arg(QDate::currentDate().toString("yyyy-MM-dd"));
+    QString qry = QString("select code, name, face_value, interest_type, coupons, payment_frequency, issue_amount, term, carry_date, maturity_date, list_date, off_list_date, record_date from treasury_bond_info where record_date = '%1'").arg(QDate::currentDate().toString("yyyy-MM-dd"));
     QSqlQuery query(qry, *bond_db->getMyDB());
 
-    int ind_tb_code = query.record().indexOf("tb_code");
-    int ind_tb_name = query.record().indexOf("tb_name");
+    int ind_code = query.record().indexOf("code");
+    int ind_name = query.record().indexOf("name");
     int ind_face_value = query.record().indexOf("face_value");
     int ind_interest_type = query.record().indexOf("interest_type");
     int ind_coupons = query.record().indexOf("coupons");
     int ind_payment_frequency = query.record().indexOf("payment_frequency");
     int ind_issue_amount = query.record().indexOf("issue_amount");
+    int ind_term = query.record().indexOf("term");
     int ind_carry_date = query.record().indexOf("carry_date");
     int ind_maturity_date = query.record().indexOf("maturity_date");
     int ind_list_date = query.record().indexOf("list_date");
@@ -112,14 +113,15 @@ void BondHandler::selectBondFromDb() {
     int ind_record_date = query.record().indexOf("record_date");
     QString code;
     while (query.next()) {
-        code = query.value(ind_tb_code).toString();
+        code = query.value(ind_code).toString();
         bondPool->bondMap->value(code)->setBond_db_info("Treasury",
-                                                 query.value(ind_tb_code).toString(),
-                                                 query.value(ind_tb_name).toString(),
+                                                 query.value(ind_code).toString(),
+                                                 query.value(ind_name).toString(),
                                                  query.value(ind_interest_type).toString(),
                                                  query.value(ind_face_value).toDouble(),
                                                  query.value(ind_coupons).toString(),
                                                  query.value(ind_payment_frequency).toDouble(),
+                                                 query.value(ind_term).toDouble(),
                                                  query.value(ind_carry_date).toDate(),
                                                  query.value(ind_list_date).toDate(),
                                                  query.value(ind_off_list_date).toDate(),
@@ -132,16 +134,17 @@ void BondHandler::selectBondFromDb() {
 void BondHandler::selectBondFromDb(QStringList codesList) {
     qDebug() << Q_FUNC_INFO;
     QString codes = codesList.join("','");
-    QString qry = QString("select tb_code, tb_name, face_value, interest_type, coupons, payment_frequency, issue_amount, carry_date, maturity_date, list_date, off_list_date, record_date from treasury_bond_info where tb_code in ('%1')").arg(codes);
+    QString qry = QString("select code, name, face_value, interest_type, coupons, payment_frequency, issue_amount, term, carry_date, maturity_date, list_date, off_list_date, record_date from treasury_bond_info where code in ('%1')").arg(codes);
     QSqlQuery query(qry, *bond_db->getMyDB());
 
-    int ind_tb_code = query.record().indexOf("tb_code");
-    int ind_tb_name = query.record().indexOf("tb_name");
+    int ind_code = query.record().indexOf("code");
+    int ind_name = query.record().indexOf("name");
     int ind_face_value = query.record().indexOf("face_value");
     int ind_interest_type = query.record().indexOf("interest_type");
     int ind_coupons = query.record().indexOf("coupons");
     int ind_payment_frequency = query.record().indexOf("payment_frequency");
     int ind_issue_amount = query.record().indexOf("issue_amount");
+    int ind_term = query.record().indexOf("term");
     int ind_carry_date = query.record().indexOf("carry_date");
     int ind_maturity_date = query.record().indexOf("maturity_date");
     int ind_list_date = query.record().indexOf("list_date");
@@ -149,14 +152,15 @@ void BondHandler::selectBondFromDb(QStringList codesList) {
     int ind_record_date = query.record().indexOf("record_date");
     QString code;
     while (query.next()) {
-        code = query.value(ind_tb_code).toString();
+        code = query.value(ind_code).toString();
         bondPool->bondMap->value(code)->setBond_db_info("Treasury",
-                                                 query.value(ind_tb_code).toString(),
-                                                 query.value(ind_tb_name).toString(),
+                                                 query.value(ind_code).toString(),
+                                                 query.value(ind_name).toString(),
                                                  query.value(ind_interest_type).toString(),
                                                  query.value(ind_face_value).toDouble(),
                                                  query.value(ind_coupons).toString(),
                                                  query.value(ind_payment_frequency).toDouble(),
+                                                 query.value(ind_term).toDouble(),
                                                  query.value(ind_carry_date).toDate(),
                                                  query.value(ind_list_date).toDate(),
                                                  query.value(ind_off_list_date).toDate(),

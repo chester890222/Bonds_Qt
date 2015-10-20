@@ -6,6 +6,7 @@
 
 #include "bondhandler.h"
 #include "model_bonds_info_table.h"
+#include "widget_single_info.h"
 
 
 namespace Ui {
@@ -24,7 +25,13 @@ protected:
     BondHandler *bondhandler;
 
     Model_Bonds_Info_Table *model_bonds_info_table;
+    Widget_Single_Info *widget_single_info;
 
+signals:
+    void signal_table_selected(const BaseBond &bond);
+
+private slots:
+    void on_tableView_Bonds_Info_doubleClicked(const QModelIndex &index);
 
 private:
     Ui::BondInfo *ui;
