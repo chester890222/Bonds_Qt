@@ -20,10 +20,12 @@ include($$PWD/../bonds.pri)
 
 
 SOURCES += basebond.cpp \
-    bondrealtimeinfo.cpp
+    bondrealtimeinfo.cpp \
+    bond.cpp
 
 HEADERS += basebond.h \
-    bondrealtimeinfo.h
+    bondrealtimeinfo.h \
+    bond.h
 
 
 unix {
